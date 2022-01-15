@@ -1,27 +1,37 @@
 ﻿using System;
 using Raylib_cs;
 
+//Skapa ett 800x800 fönster som heter "The project!"
+(int, int) screenSize = (800, 800);
+
 //Skapa en MasterControl klass i Master.cs 
-MasterControl mc = new MasterControl();
+MasterControl mc;
+
+//Initierar fönstret
+Setup();
 
 //Start av spelets logik
-mc.Setup();
 mc.LogicLoop();
 
+
+void Setup()
+{
+    Raylib.InitWindow(screenSize.Item1, screenSize.Item2, "The project!");
+    mc = new MasterControl();
+}
 
 public class MasterControl
 {
     //Variablar
-    string menu = "start";
-    public (int, int) screenSize = (800, 800);
+    string menu;
 
     //Klasser
-    StartMenu sm = new StartMenu(screenSize);
+    StartMenu sm;
 
-    public void Setup()
+    public MasterControl()
     {
-        //Skapa ett 800x800 fönster som heter "The project!"
-        Raylib.InitWindow(screenSize.Item1, screenSize.Item2, "The project!");
+        menu = "start";
+        sm = new StartMenu();
     }
 
     public void LogicLoop()
@@ -38,7 +48,7 @@ public class MasterControl
             }
         }
     }
-    
+
     public void SetMenu(string newMenu)
     {
         //Ändrar värdet på "menu" vilket visar vilken meny man är i. T.ex från "start" till "map"

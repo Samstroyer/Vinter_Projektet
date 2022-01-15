@@ -6,13 +6,16 @@ public class StartMenu
     //Variabler och klasser
     int recWidth, recHeight;
     (int, int) screenSize;
-    (Rectangle, string)[] buttons = new (Rectangle, string)[3] { (new Rectangle(), "Play"), (new Rectangle(), "Create Map"), (new Rectangle(), "Settings") };
+    (Rectangle, string)[] buttons = new (Rectangle, string)[3];
     MasterControl mc = new MasterControl();
 
-    public StartMenu((int, int) actualSize)
+    public StartMenu()
     {
         //Eftersom det är olika filer (min enda gissning på problemet) går det inte att köra Raylib.GetScreenWidth() utan att få 0 ALLTID! Måste därför importera det i en variabel
-        screenSize = actualSize;
+        buttons[0] = (new Rectangle(), "Play");
+        buttons[1] = (new Rectangle(), "Create Map");
+        buttons[2] = (new Rectangle(), "Settings");
+        screenSize = (800, 800);
         recWidth = 400;
         recHeight = 100;
 
@@ -37,7 +40,7 @@ public class StartMenu
         //Kolla om användaren klickar någonstans
         Click();
 
-        //Rita knapparna och 
+        //Rita knapparna och skriv texten
         for (int i = 0; i < buttons.Length; i++)
         {
             Rectangle tempRec = buttons[i].Item1;
