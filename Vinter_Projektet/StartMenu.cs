@@ -3,7 +3,9 @@ using Raylib_cs;
 
 public class StartMenu
 {
-    Rectangle[] recs = new Rectangle[3];
+    //     Rectangle[] recs = new Rectangle[3];
+    //     string[] buttonText = new string[3] { "Play", "Create Map", "Settings" };
+    (Rectangle, string)[] buttons = new (Rectangle, string)[3] { (new Rectangle(), "Play"), (new Rectangle(), "Create Map"), (new Rectangle(), "Settings") };
     int recWidth, recHeight;
     (int, int) screenSize;
 
@@ -19,11 +21,11 @@ public class StartMenu
         int startY = 300;
 
         //Ge alla rektanglar en position med for() loop
-        for (int i = 0; i < recs.Length; i++)
+        for (int i = 0; i < buttons.Length; i++)
         {
             int x = screenSize.Item1 / 2 - recWidth / 2;
             int y = i * iOffset + startY;
-            recs[i] = new Rectangle(x, y, recWidth, recHeight);
+            buttons[i].Item1 = new Rectangle(x, y, recWidth, recHeight);
         }
     }
 
@@ -31,9 +33,14 @@ public class StartMenu
     {
         Raylib.BeginDrawing();
         Raylib.ClearBackground(Color.WHITE);
-        foreach (Rectangle rec in recs)
+
+        //Rita knapparna och 
+        for (int i = 0; i < buttons.Length; i++)
         {
-            Raylib.DrawRectangleRec(rec, Color.GRAY);
+            Rectangle tempRec = buttons[i].Item1;
+            Raylib.DrawRectangleRec(tempRec, Color.GRAY);
+            Raylib.DrawRectangleLinesEx(tempRec, 5, Color.BLACK);
+            Raylib.DrawText(buttons[i].Item2, (int)tempRec.x + 30, (int)tempRec.y + 30, 40, Color.BLUE);
         }
         Raylib.EndDrawing();
     }
