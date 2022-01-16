@@ -37,7 +37,7 @@ namespace VinterProjektet
         {
             int recWidth = 400;
             int recHeight = 100;
-            (Rectangle, string)[] buttons = new (Rectangle, string)[3] { (new Rectangle(), "Play"), (new Rectangle(), "Create Map"), (new Rectangle(), "Settings") };
+            (Rectangle, string, string)[] buttons = new (Rectangle, string, string)[3] { (new Rectangle(), "Play", "play"), (new Rectangle(), "Create Map", "creator"), (new Rectangle(), "Settings", "settings") };
             string nextMenu = "";
             bool selected = false;
 
@@ -50,7 +50,7 @@ namespace VinterProjektet
                 buttons[i].Item1 = new Rectangle(x, y, recWidth, recHeight);
             }
 
-            while (!selected)
+            while (nextMenu == "")
             {
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.WHITE);
@@ -61,27 +61,38 @@ namespace VinterProjektet
 
                     Raylib.DrawRectangleRec(tempRec, Color.GRAY);
                     Raylib.DrawRectangleLinesEx(tempRec, 5, Color.BLACK);
+                    nextMenu = Click(buttons);
                     Raylib.DrawText(buttons[i].Item2, (int)tempRec.x + 30, (int)tempRec.y + 30, 40, Color.ORANGE);
                 }
+
                 Raylib.EndDrawing();
             }
 
             return nextMenu;
         }
 
-        static bool Click(Rectangle buttons)
+        static string Click((Rectangle, string, string)[] buttons)
         {
-            Rectangle tempRec = buttons;
-            //Kan ha den utanför loopen men om man klickar t.ex (100, 100) men utanför loopen var man (0, 0) så får man att man klickade på (0, 0). Speedrunner issues be like...
-            Vector2 mouseCords = Raylib.GetMousePosition();
-
-            (int xStart, int xStop, int yStart, int yStop) buttonHitbox = ((int)tempRec.x, (int)tempRec.x + (int)tempRec.width, (int)tempRec.y, (int)tempRec.y + (int)tempRec.height);
-
-            if (mouseCords.X > buttonHitbox.xStart && mouseCords.X < buttonHitbox.xStop && mouseCords.Y > buttonHitbox.yStart && mouseCords.Y < buttonHitbox.yStop)
+            for (int i = 0; i < buttons.Length; i++)
             {
-                return false;
+                //Kan ha den utanför loopen men om man klickar t.ex (100, 100) men utanför loopen var man (0, 0) så får man att man klickade på (0, 0). Speedrunner issues be like...
+                Vector2 mouseCords = Raylib.GetMousePosition();
+
+                Rectangle tempRec = buttons[i].Item1;
+
+                (int xStart, int xStop, int yStart, int yStop) buttonHitbox = ((int)tempRec.x, (int)tempRec.x + (int)tempRec.width, (int)tempRec.y, (int)tempRec.y + (int)tempRec.height);
+
+                if (mouseCords.X > buttonHitbox.xStart && mouseCords.X < buttonHitbox.xStop && mouseCords.Y > buttonHitbox.yStart && mouseCords.Y < buttonHitbox.yStop)
+                {
+                    Raylib.DrawRectangleRec(tempRec, Color.DARKGRAY);
+                    if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
+                    {
+                        Console.WriteLine($"Returning {buttons[i].Item3}");
+                        return buttons[i].Item3;
+                    }
+                }
             }
-            return true;
+            return "";
         }
     }
 }
