@@ -1,29 +1,31 @@
 ﻿using System;
 using Raylib_cs;
+using System.Numerics;
 
-namespace Quiz
+namespace VinterProjektet
 {
     class Program
     {
         static void Main(string[] args)
         {
             Setup();
-            GameLoop("start");
+            GameLoop();
         }
 
         static void Setup()
         {
-            //Fixar ett 800x800 fönster med namnet "The project!"
             Raylib.InitWindow(800, 800, "The project!");
         }
 
-        static void GameLoop(string menu)
+        static void GameLoop()
         {
+            string menu = "start";
             while (!Raylib.WindowShouldClose())
             {
                 switch (menu)
                 {
                     case "start":
+                        menu = DisplayStartScreen();
                         break;
                     default:
                         break;
@@ -31,77 +33,55 @@ namespace Quiz
             }
         }
 
-        public class StartMenu
+        static string DisplayStartScreen()
         {
-            //Variabler + alla knappar (knapp och text till knappen)
             int recWidth = 400;
             int recHeight = 100;
             (Rectangle, string)[] buttons = new (Rectangle, string)[3] { (new Rectangle(), "Play"), (new Rectangle(), "Create Map"), (new Rectangle(), "Settings") };
+            string nextMenu = "";
+            bool selected = false;
 
-            public StartMenu()
+            int iOffset = 150;
+            int startY = 300;
+            for (int i = 0; i < buttons.Length; i++)
             {
-                //Ge alla rektanglar en position med for() loop
-                int iOffset = 150;
-                int startY = 300;
-                for (int i = 0; i < buttons.Length; i++)
-                {
-                    int x = screenSize.Item1 / 2 - recWidth / 2;
-                    int y = i * iOffset + startY;
-                    buttons[i].Item1 = new Rectangle(x, y, recWidth, recHeight);
-                }
+                int x = Raylib.GetScreenWidth() / 2 - recWidth / 2;
+                int y = i * iOffset + startY;
+                buttons[i].Item1 = new Rectangle(x, y, recWidth, recHeight);
             }
 
-            public void DisplayStartScreen()
+            while (!selected)
             {
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.WHITE);
 
-                //Kolla om användaren klickar någonstans
-                Click();
-
-                //Rita knapparna och skriv texten
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     Rectangle tempRec = buttons[i].Item1;
+
                     Raylib.DrawRectangleRec(tempRec, Color.GRAY);
                     Raylib.DrawRectangleLinesEx(tempRec, 5, Color.BLACK);
-                    Raylib.DrawText(buttons[i].Item2, (int)tempRec.x + 30, (int)tempRec.y + 30, 40, Color.BLUE);
+                    Raylib.DrawText(buttons[i].Item2, (int)tempRec.x + 30, (int)tempRec.y + 30, 40, Color.ORANGE);
                 }
                 Raylib.EndDrawing();
             }
 
-            public void DisplaySettingsScreen()
+            return nextMenu;
+        }
+
+        static bool Click(Rectangle buttons)
+        {
+            Rectangle tempRec = buttons;
+            //Kan ha den utanför loopen men om man klickar t.ex (100, 100) men utanför loopen var man (0, 0) så får man att man klickade på (0, 0). Speedrunner issues be like...
+            Vector2 mouseCords = Raylib.GetMousePosition();
+
+            (int xStart, int xStop, int yStart, int yStop) buttonHitbox = ((int)tempRec.x, (int)tempRec.x + (int)tempRec.width, (int)tempRec.y, (int)tempRec.y + (int)tempRec.height);
+
+            if (mouseCords.X > buttonHitbox.xStart && mouseCords.X < buttonHitbox.xStop && mouseCords.Y > buttonHitbox.yStart && mouseCords.Y < buttonHitbox.yStop)
             {
-
+                return false;
             }
-
-            private void Click()
-            {
-                for (int i = 0; i < buttons.Length; i++)
-                {
-                    Rectangle tempRec = buttons[i].Item1;
-                    (int xStart, int xStop, int yStart, int yStop) buttonHitbox = ((int)tempRec.x, (int)tempRec.x + (int)tempRec.width, (int)tempRec.y, (int)tempRec.y + (int)tempRec.height);
-
-                    if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
-                    {
-                        switch (i)
-                        {
-                            case 0:
-                                Console.WriteLine("set menu to 'play'");
-                                SetMenu("play");
-                                break;
-                            case 1:
-                                Console.WriteLine("set menu to 'creator'");
-                                SetMenu("creator");
-                                break;
-                            case 2:
-                                Console.WriteLine("set menu to 'settings'");
-                                SetMenu("settings");
-                                break;
-                        }
-                    }
-                }
-            }
+            return true;
         }
     }
 }
