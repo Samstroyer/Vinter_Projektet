@@ -60,7 +60,7 @@ namespace VinterProjektet
             }
             else
             {
-                Tile[,] tiles = new Tile[200, 200];
+
             }
 
             while (!Raylib.WindowShouldClose())
@@ -154,16 +154,12 @@ namespace VinterProjektet
     class Tile
     {
         Vector2 cords = new Vector2();
+        public string type;
 
         Tile(int x, int y)
         {
             cords.X = x;
             cords.Y = y;
-        }
-
-        void Branch()
-        {
-            
         }
     }
 }
