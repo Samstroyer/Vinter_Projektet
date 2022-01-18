@@ -50,37 +50,41 @@ namespace VinterProjektet
             //sT = stone tile : >200
 
             string selectedImage = "";
-            Image map;
             Random ran = new Random();
+            Tile[,] map = new Tile[1000, 1000];
+
 
             if (Directory.Exists(@"SaveData\Pregens"))
             {
                 int pregenAlternatives = Directory.GetFiles(@"SaveData\Pregens").Count();
                 selectedImage = ran.Next(pregenAlternatives).ToString() + ".png";
-                map = Raylib.LoadImage(@$"SaveData\Pregens\{selectedImage}");
+                Image noiseImage = Raylib.LoadImage(@$"SaveData\Pregens\{selectedImage}");
+                noiseImage = Raylib.LoadImage(@$"SaveData\Pregens\12.png");
+
+                //Generatorn : bild till karta
+                Image test = Raylib.GetTextureData(Raylib.LoadTextureFromImage(noiseImage));
+                Texture2D test2d = Raylib.LoadTextureFromImage(test);
                 Raylib.BeginDrawing();
-                Texture2D MAP = Raylib.LoadTextureFromImage(map);
-                Raylib.UnloadImage(map);
-                Raylib.DrawTexture(MAP, 0, 0, Color.WHITE);
-                Raylib.EndDrawing();
+                Raylib.DrawTexture(test2d, 0, 0, Color.WHITE);
+                Raylib.DrawTexture(Raylib.LoadTextureFromImage(noiseImage), 0, 250, Color.WHITE);
+                Raylib.EndDrawing(); ;
+
+                Raylib.UnloadImage(noiseImage);
             }
             else
             {
                 Console.WriteLine("Error loading, no saves directory!");
                 Raylib.CloseWindow();
             }
-
-
-            map = Raylib.LoadImage(@$"SaveData\Pregens\{selectedImage}");
         }
 
         static string Creator()
         {
-            int[] tileSize = new int[12] { 5, 8, 10, 16, 20, 25, 32, 40, 50, 80, 100, 160 };
+            int[] pixelsPerTile = new int[13] { 2, 5, 8, 10, 16, 20, 25, 32, 40, 50, 80, 100, 160 };
 
 
 
-            int currSize = tileSize[5];
+            int currPixels = pixelsPerTile[6];
             bool playing = true;
 
             while (playing && !Raylib.WindowShouldClose())
