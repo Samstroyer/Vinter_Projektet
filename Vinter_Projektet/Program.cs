@@ -49,16 +49,29 @@ namespace VinterProjektet
             //fT = forrest tile : 136-200
             //sT = stone tile : >200
 
-            string path = @"SaveData\Pregens";
-            string selImage = "";
+            string selectedImage = "";
             Image map;
-            if (File.Exists(path))
-            {
+            Random ran = new Random();
 
+            if (Directory.Exists(@"SaveData\Pregens"))
+            {
+                int pregenAlternatives = Directory.GetFiles(@"SaveData\Pregens").Count();
+                selectedImage = ran.Next(pregenAlternatives).ToString() + ".png";
+                map = Raylib.LoadImage(@$"SaveData\Pregens\{selectedImage}");
+                Raylib.BeginDrawing();
+                Texture2D MAP = Raylib.LoadTextureFromImage(map);
+                Raylib.UnloadImage(map);
+                Raylib.DrawTexture(MAP, 0, 0, Color.WHITE);
+                Raylib.EndDrawing();
+            }
+            else
+            {
+                Console.WriteLine("Error loading, no saves directory!");
+                Raylib.CloseWindow();
             }
 
 
-            map = Raylib.LoadImage(@$"{path}\{selImage}");
+            map = Raylib.LoadImage(@$"SaveData\Pregens\{selectedImage}");
         }
 
         static string Creator()
