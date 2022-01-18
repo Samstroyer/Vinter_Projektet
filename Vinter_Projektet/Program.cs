@@ -44,29 +44,21 @@ namespace VinterProjektet
         static void CreateMap()
         {
             //Index:
-            //wT = water tile : 0-10 - 91-100
-            //fT = flat tile : 11-20 - 46-55 - 81-90
-            //fT = forrest tile : 21-45
-            //sT = stone tile : 56-80
+            //wT = water tile : <65
+            //fT = flat tile : 66 - 135
+            //fT = forrest tile : 136-200
+            //sT = stone tile : >200
 
-            //Högre borde i teorin vara lättare men mer utspritt
-            int genDiff = 5;
-            Random gen = new Random();
-
-            if (File.Exists(@"SaveData\WorldData.txt"))
-            {
-                Console.WriteLine("existsMyGuy!");
-                string[] map = File.ReadAllLines(@"SaveData\WorldData.txt");
-            }
-            else
+            string path = @"SaveData\Pregens";
+            string selImage = "";
+            Image map;
+            if (File.Exists(path))
             {
 
             }
 
-            while (!Raylib.WindowShouldClose())
-            {
 
-            }
+            map = Raylib.LoadImage(@$"{path}\{selImage}");
         }
 
         static string Creator()
@@ -81,6 +73,8 @@ namespace VinterProjektet
             while (playing && !Raylib.WindowShouldClose())
             {
                 Raylib.BeginDrawing();
+                Raylib.ClearBackground(Color.WHITE);
+                Raylib.DrawRectangle(200, 200, 200, 200, Color.ORANGE);
                 Raylib.EndDrawing();
             }
 
