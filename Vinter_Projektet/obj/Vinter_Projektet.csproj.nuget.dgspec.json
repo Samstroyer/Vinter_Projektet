@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj": {}
+    "C:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj": {}
   },
   "projects": {
-    "c:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj": {
+    "C:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj",
+        "projectUniqueName": "C:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj",
         "projectName": "Vinter_Projektet",
-        "projectPath": "c:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj",
+        "projectPath": "C:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj",
         "packagesPath": "C:\\Users\\palmer.samuel\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\obj\\",
+        "outputPath": "C:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\palmer.samuel\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -19,9 +19,6 @@
         "originalTargetFrameworks": [
           "net5.0"
         ],
-        "sources": {
-          "https://api.nuget.org/v3/index.json": {}
-        },
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",

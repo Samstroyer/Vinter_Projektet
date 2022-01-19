@@ -51,23 +51,39 @@ namespace VinterProjektet
 
             string selectedImage = "";
             Random ran = new Random();
-            Tile[,] map = new Tile[1000, 1000];
-
 
             if (Directory.Exists(@"SaveData\Pregens"))
             {
                 int pregenAlternatives = Directory.GetFiles(@"SaveData\Pregens").Count();
                 selectedImage = ran.Next(pregenAlternatives).ToString() + ".png";
-                Image noiseImage = Raylib.LoadImage(@$"SaveData\Pregens\{selectedImage}");
-                noiseImage = Raylib.LoadImage(@$"SaveData\Pregens\12.png");
 
-                //Generatorn : bild till karta
-                Color color = Raylib.GetImageColor(noiseImage, 0, 0);
+                Image noiseImage = Raylib.LoadImage(@$"SaveData\Pregens\{selectedImage}");
+                noiseImage = Raylib.LoadImage(@$"SaveData\Pregens\116.png");
+                //Generatorn : bild till karta : ALLA RGB ÄR SAMMA! (Gray scale 0-255)
+                //ms = map size (Relativ till 250! så 4 betyder [250*4 = 1000])
+                int ms = 4;
+                int total = 0;
+                Tile[,] mapTiles = new Tile[noiseImage.width * ms, noiseImage.height * 4];
+                for (int i = 0; i < noiseImage.width; i += ms)
+                {
+                    for (int j = 0; j < noiseImage.height; j += ms)
+                    {
+                        Color color = Raylib.GetImageColor(noiseImage, i / ms, j / ms);
+                        for (int xChunk = i; xChunk < i + ms; xChunk++)
+                        {
+                            for (int yChunk = j; yChunk < j + ms; yChunk++)
+                            {
+                                mapTiles[xChunk, yChunk] = new Tile(color.b);
+                                Console.WriteLine(total + "    " + color.b);
+                                total++;
+                            }
+                        }
+                    }
+                }
+                Raylib.UnloadImage(noiseImage);
 
                 Raylib.BeginDrawing();
                 Raylib.EndDrawing();
-
-                Raylib.UnloadImage(noiseImage);
             }
             else
             {
@@ -162,13 +178,26 @@ namespace VinterProjektet
 
     class Tile
     {
-        Vector2 cords = new Vector2();
         public string type;
 
-        Tile(int x, int y)
+        public Tile(int brightness)
         {
-            cords.X = x;
-            cords.Y = y;
+            if (brightness < 65)
+            {
+                type = "water";
+            }
+            else if (brightness < 135)
+            {
+                type = "flat";
+            }
+            else if (brightness < 200)
+            {
+                type = "forrest";
+            }
+            else
+            {
+                type = "stone";
+            }
         }
     }
 }
