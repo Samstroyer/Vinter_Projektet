@@ -2,16 +2,16 @@
   "version": 3,
   "targets": {
     "net5.0": {
-      "Raylib-cs/3.7.0.1": {
+      "Raylib-cs/4.0.0-alpha.4": {
         "type": "package",
         "dependencies": {
           "System.Numerics.Vectors": "4.5.0"
         },
         "compile": {
-          "lib/netstandard2.1/Raylib-cs.dll": {}
+          "lib/net5.0/Raylib-cs.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.1/Raylib-cs.dll": {}
+          "lib/net5.0/Raylib-cs.dll": {}
         },
         "runtimeTargets": {
           "runtimes/linux-x64/native/libraylib.so": {
@@ -44,16 +44,19 @@
     }
   },
   "libraries": {
-    "Raylib-cs/3.7.0.1": {
-      "sha512": "DN9MC1QyyUFd5rskN9czcZ0w1DjvZ23vaJmwexaPOqQ0b0qJppq1hL0jWfl3fzAANJ59ZxuyUyMF6gSIM7QuWg==",
+    "Raylib-cs/4.0.0-alpha.4": {
+      "sha512": "IY9dSY0JvI2i5JRg6oXPFMB9O/Foy2kTAhVN//VjR9IOlDOvpp1j5hHr3IjGxD8Nx/UN0xeSteVLPnx0ve9LLQ==",
       "type": "package",
-      "path": "raylib-cs/3.7.0.1",
+      "path": "raylib-cs/4.0.0-alpha.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "lib/netstandard2.1/Raylib-cs.dll",
-        "lib/netstandard2.1/Raylib-cs.xml",
-        "raylib-cs.3.7.0.1.nupkg.sha512",
+        "README.md",
+        "lib/net5.0/Raylib-cs.dll",
+        "lib/net5.0/Raylib-cs.xml",
+        "lib/net6.0/Raylib-cs.dll",
+        "lib/net6.0/Raylib-cs.xml",
+        "raylib-cs.4.0.0-alpha.4.nupkg.sha512",
         "raylib-cs.nuspec",
         "raylib-cs_64x64.png",
         "runtimes/linux-x64/native/libraylib.so",
@@ -112,7 +115,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
-      "Raylib-cs >= 3.7.0.1"
+      "Raylib-cs >= 4.0.0-alpha.4"
     ]
   },
   "packageFolders": {
@@ -121,11 +124,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj",
+      "projectUniqueName": "c:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj",
       "projectName": "Vinter_Projektet",
-      "projectPath": "C:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj",
+      "projectPath": "c:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj",
       "packagesPath": "C:\\Users\\palmer.samuel\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\obj\\",
+      "outputPath": "c:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\palmer.samuel\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -133,6 +136,9 @@
       "originalTargetFrameworks": [
         "net5.0"
       ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
@@ -151,7 +157,7 @@
         "dependencies": {
           "Raylib-cs": {
             "target": "Package",
-            "version": "[3.7.0.1, )"
+            "version": "[4.0.0-alpha.4, )"
           }
         },
         "imports": [

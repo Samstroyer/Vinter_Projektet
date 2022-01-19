@@ -62,12 +62,10 @@ namespace VinterProjektet
                 noiseImage = Raylib.LoadImage(@$"SaveData\Pregens\12.png");
 
                 //Generatorn : bild till karta
-                Image test = Raylib.GetTextureData(Raylib.LoadTextureFromImage(noiseImage));
-                Texture2D test2d = Raylib.LoadTextureFromImage(test);
+                Color color = Raylib.GetImageColor(noiseImage, 0, 0);
+
                 Raylib.BeginDrawing();
-                Raylib.DrawTexture(test2d, 0, 0, Color.WHITE);
-                Raylib.DrawTexture(Raylib.LoadTextureFromImage(noiseImage), 0, 250, Color.WHITE);
-                Raylib.EndDrawing(); ;
+                Raylib.EndDrawing();
 
                 Raylib.UnloadImage(noiseImage);
             }
