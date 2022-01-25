@@ -56,28 +56,22 @@ namespace VinterProjektet
             {
                 int pregenAlternatives = Directory.GetFiles(@"SaveData\Pregens").Count();
                 selectedImage = ran.Next(pregenAlternatives).ToString() + ".png";
+                Tile[,] mapTiles = new Tile[1000, 1000];
 
                 Image noiseImage = Raylib.LoadImage(@$"SaveData\Pregens\{selectedImage}");
                 noiseImage = Raylib.LoadImage(@$"SaveData\Pregens\116.png");
+
+                int imageToMapSize = 4;
                 //Generatorn : bild till karta : ALLA RGB ÄR SAMMA! (Gray scale 0-255)
-                //ms = map size (Relativ till 250! så 4 betyder [250*4 = 1000])
-                int ms = 4;
-                int total = 0;
-                Tile[,] mapTiles = new Tile[noiseImage.width * ms, noiseImage.height * 4];
-                for (int i = 0; i < noiseImage.width; i += ms)
+                for (int y = 0; y <= noiseImage.height; y += 5)
                 {
-                    for (int j = 0; j < noiseImage.height; j += ms)
+                    for (int x = 0; x < noiseImage.width; x++)
                     {
-                        Color color = Raylib.GetImageColor(noiseImage, i / ms, j / ms);
-                        for (int xChunk = i; xChunk < i + ms; xChunk++)
-                        {
-                            for (int yChunk = j; yChunk < j + ms; yChunk++)
-                            {
-                                mapTiles[xChunk, yChunk] = new Tile(color.b);
-                                Console.WriteLine(total + "    " + color.b);
-                                total++;
-                            }
-                        }
+                        Color color = Raylib.GetImageColor(noiseImage, x, y);
+                        //Varje pixel i bilden ska vara en 5x5 chunk på kartan : så att 250x250 blir 1000x1000
+
+                        //Jag märkte från några tester att alla olika saker ger samma värde (så att r, g och b har samma för det är gråskala)
+                        mapTiles = GridFiller(mapTiles, color.g, (x, y));
                     }
                 }
                 Raylib.UnloadImage(noiseImage);
@@ -90,6 +84,35 @@ namespace VinterProjektet
                 Console.WriteLine("Error loading, no saves directory!");
                 Raylib.CloseWindow();
             }
+        }
+
+        static Tile[,] GridFiller(Tile[,] map, int light, (int, int) Coordinates)
+        {
+            string alt;
+            switch (light)
+            {
+                case < 65:
+                    alt = "water";
+                    break;
+                case < 135:
+                    alt = "flat";
+                    break;
+                case < 200:
+                    alt = "forrest";
+                    break;
+                default:
+                    alt = "stone";
+                    break;
+            }
+
+            for (int x = Coordinates.Item1; x <= Coordinates.Item1 + 5; x++)
+            {
+                for (int y = Coordinates.Item2; y <= Coordinates.Item2 + 5; y++)
+                {
+                    
+                }
+            }
+            return map;
         }
 
         static string Creator()
