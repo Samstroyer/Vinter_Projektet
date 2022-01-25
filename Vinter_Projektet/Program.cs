@@ -89,27 +89,29 @@ namespace VinterProjektet
         static Tile[,] GridFiller(Tile[,] map, int light, (int, int) Coordinates)
         {
             string alt;
-            switch (light)
+
+            if (light < 65)
             {
-                case < 65:
-                    alt = "water";
-                    break;
-                case < 135:
-                    alt = "flat";
-                    break;
-                case < 200:
-                    alt = "forrest";
-                    break;
-                default:
-                    alt = "stone";
-                    break;
+                alt = "water";
+            }
+            else if (light < 135)
+            {
+                alt = "flat";
+            }
+            else if (light < 200)
+            {
+                alt = "forrest";
+            }
+            else
+            {
+                alt = "stone";
             }
 
             for (int x = Coordinates.Item1; x <= Coordinates.Item1 + 5; x++)
             {
                 for (int y = Coordinates.Item2; y <= Coordinates.Item2 + 5; y++)
                 {
-                    
+                    map[x, y] = new Tile(alt);
                 }
             }
             return map;
@@ -203,24 +205,9 @@ namespace VinterProjektet
     {
         public string type;
 
-        public Tile(int brightness)
+        public Tile(string alt)
         {
-            if (brightness < 65)
-            {
-                type = "water";
-            }
-            else if (brightness < 135)
-            {
-                type = "flat";
-            }
-            else if (brightness < 200)
-            {
-                type = "forrest";
-            }
-            else
-            {
-                type = "stone";
-            }
+            type = alt;
         }
     }
 }
