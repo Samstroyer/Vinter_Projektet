@@ -63,7 +63,7 @@ namespace VinterProjektet
 
                 int imageToMapSize = 4;
                 //Generatorn : bild till karta : ALLA RGB ÄR SAMMA! (Gray scale 0-255)
-                for (int y = 0; y <= noiseImage.height; y += 5)
+                for (int y = 0; y <= noiseImage.height; y++)
                 {
                     for (int x = 0; x < noiseImage.width; x++)
                     {
@@ -107,9 +107,12 @@ namespace VinterProjektet
                 alt = "stone";
             }
 
-            for (int x = Coordinates.Item1; x <= Coordinates.Item1 + 5; x++)
+            Coordinates.Item1 *= 4;
+            Coordinates.Item2 *= 4;
+
+            for (int x = Coordinates.Item1; x < Coordinates.Item1 + 4; x++)
             {
-                for (int y = Coordinates.Item2; y <= Coordinates.Item2 + 5; y++)
+                for (int y = Coordinates.Item2; y < Coordinates.Item2 + 4; y++)
                 {
                     map[x, y] = new Tile(alt);
                 }
