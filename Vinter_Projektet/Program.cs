@@ -63,19 +63,33 @@ namespace VinterProjektet
 
                 int imageToMapSize = 4;
                 //Generatorn : bild till karta : ALLA RGB ÄR SAMMA! (Gray scale 0-255)
-                for (int y = 0; y <= noiseImage.height; y++)
+                for (int x = 0; x <= noiseImage.width; x++)
                 {
-                    for (int x = 0; x < noiseImage.width; x++)
+                    for (int y = 0; y < noiseImage.height; y++)
                     {
+                        //Vi får pixelns ljusstyrka och av det ska vi generera "terrain"
                         Color color = Raylib.GetImageColor(noiseImage, x, y);
-                        //Varje pixel i bilden ska vara en 5x5 chunk på kartan : så att 250x250 blir 1000x1000
+                        int brightness = (color.r + color.g + color.b) / 3;
 
-                        //Jag märkte från några tester att alla olika saker ger samma värde (så att r, g och b har samma för det är gråskala)
-                        mapTiles = GridFiller(mapTiles, color.g, (x, y));
+                        for (int xx = 0; xx < 4; xx++)
+                        {
+                            for (int yy = 0; yy < 4; yy++)
+                            {
+                                int usedX = xx + (x * 4);
+                                int usedY = yy + (y * 4);
+                                mapTiles = GridFiller(mapTiles, brightness, (usedX, usedY));
+                            }
+                        }
                     }
                 }
                 Raylib.UnloadImage(noiseImage);
 
+
+                for (int i = 0; i < mapTiles.GetLength(0); i++)
+                {
+
+                }
+                
                 Raylib.BeginDrawing();
                 Raylib.EndDrawing();
             }
