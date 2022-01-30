@@ -21,7 +21,7 @@ namespace VinterProjektet
 
         static void GameLoop()
         {
-            string menu = "creator";
+            string menu = "start";
             while (!Raylib.WindowShouldClose())
             {
                 switch (menu)
@@ -59,38 +59,42 @@ namespace VinterProjektet
                 Tile[,] mapTiles = new Tile[1000, 1000];
 
                 Image noiseImage = Raylib.LoadImage(@$"SaveData\Pregens\{selectedImage}");
-                noiseImage = Raylib.LoadImage(@$"SaveData\Pregens\116.png");
 
-                int imageToMapSize = 4;
                 //Generatorn : bild till karta : ALLA RGB ÄR SAMMA! (Gray scale 0-255)
-                for (int x = 0; x <= noiseImage.width; x++)
+                for (int x = 0; x < noiseImage.width; x++)
                 {
                     for (int y = 0; y < noiseImage.height; y++)
                     {
                         //Vi får pixelns ljusstyrka och av det ska vi generera "terrain"
-                        Color color = Raylib.GetImageColor(noiseImage, x, y);
-                        int brightness = (color.r + color.g + color.b) / 3;
+                        Color colors = Raylib.GetImageColor(noiseImage, x, y);
+                        int brightness = (colors.r + colors.g + colors.b) / 3;
 
+                        //Den här delen skulle vara i en separat funktion - men tror jag gillar det mer grupperat i ett.
+                        //4 for loops i varandra också, not too bad.... (it is really bad)
                         for (int xx = 0; xx < 4; xx++)
                         {
                             for (int yy = 0; yy < 4; yy++)
                             {
                                 int usedX = xx + (x * 4);
                                 int usedY = yy + (y * 4);
-                                mapTiles = GridFiller(mapTiles, brightness, (usedX, usedY));
+
+                                //Om man körde javascript skulle det finnas en cool arrowfunction här... RIP
+                                mapTiles[xx + x * 4, yy + y * 4] = GenerateTile(brightness);
                             }
                         }
                     }
                 }
                 Raylib.UnloadImage(noiseImage);
 
-
+                Raylib.BeginDrawing();
+                Raylib.ClearBackground(Color.BLACK);
                 for (int i = 0; i < mapTiles.GetLength(0); i++)
                 {
-
+                    for (int j = 0; j < mapTiles.GetLength(1); j++)
+                    {
+                        Raylib.DrawRectangle(Convert.ToInt32(i * 0.8), Convert.ToInt32(j * 0.8), 1, 1, Raylib.ColorAlpha(Color.WHITE, mapTiles[i, j].alpha));
+                    }
                 }
-                
-                Raylib.BeginDrawing();
                 Raylib.EndDrawing();
             }
             else
@@ -100,7 +104,7 @@ namespace VinterProjektet
             }
         }
 
-        static Tile[,] GridFiller(Tile[,] map, int light, (int, int) Coordinates)
+        static Tile GenerateTile(int light)
         {
             string alt;
 
@@ -121,17 +125,7 @@ namespace VinterProjektet
                 alt = "stone";
             }
 
-            Coordinates.Item1 *= 4;
-            Coordinates.Item2 *= 4;
-
-            for (int x = Coordinates.Item1; x < Coordinates.Item1 + 4; x++)
-            {
-                for (int y = Coordinates.Item2; y < Coordinates.Item2 + 4; y++)
-                {
-                    map[x, y] = new Tile(alt);
-                }
-            }
-            return map;
+            return new Tile(alt, light);
         }
 
         static string Creator()
@@ -218,13 +212,17 @@ namespace VinterProjektet
         }
     }
 
+
+
     class Tile
     {
         public string type;
+        public float alpha;
 
-        public Tile(string alt)
+        public Tile(string alt, int light)
         {
             type = alt;
+            alpha = light / 255f;
         }
     }
 }
