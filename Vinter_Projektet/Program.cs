@@ -86,16 +86,24 @@ namespace VinterProjektet
                 }
                 Raylib.UnloadImage(noiseImage);
 
-                Raylib.BeginDrawing();
-                Raylib.ClearBackground(Color.BLACK);
-                for (int i = 0; i < mapTiles.GetLength(0); i++)
-                {
-                    for (int j = 0; j < mapTiles.GetLength(1); j++)
-                    {
-                        Raylib.DrawRectangle(Convert.ToInt32(i * 0.8), Convert.ToInt32(j * 0.8), 1, 1, Raylib.ColorAlpha(Color.WHITE, mapTiles[i, j].alpha));
-                    }
-                }
-                Raylib.EndDrawing();
+
+                StartGame();
+
+
+
+
+
+                // shows image on the screen - useless RN
+                // Raylib.BeginDrawing();
+                // Raylib.ClearBackground(Color.BLACK);
+                // for (int i = 0; i < mapTiles.GetLength(0); i++)
+                // {
+                //     for (int j = 0; j < mapTiles.GetLength(1); j++)
+                //     {
+                //         Raylib.DrawRectangle(Convert.ToInt32(i * 0.8), Convert.ToInt32(j * 0.8), 1, 1, Raylib.ColorAlpha(Color.WHITE, mapTiles[i, j].alpha));
+                //     }
+                // }
+                // Raylib.EndDrawing();
             }
             else
             {
@@ -128,7 +136,7 @@ namespace VinterProjektet
             return new Tile(alt, light);
         }
 
-        static string Creator()
+        static string StartGame()
         {
             int[] pixelsPerTile = new int[13] { 2, 5, 8, 10, 16, 20, 25, 32, 40, 50, 80, 100, 160 };
 
