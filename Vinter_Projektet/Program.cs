@@ -109,7 +109,7 @@ namespace VinterProjektet
 
         static void StartGame(Tile[,] map)
         {
-            int[] pixelsPerTile = new int[11] { 2, 4, 8, 16, 20, 32, 40, 50, 80, 100, 160 };
+            int[] pixelsPerTile = new int[12] { 1, 2, 4, 8, 16, 20, 32, 40, 50, 80, 100, 160 };
             int indexer = 6;
             int currPixelSize = pixelsPerTile[indexer];
 
@@ -124,7 +124,7 @@ namespace VinterProjektet
             while (playing && !Raylib.WindowShouldClose())
             {
                 int visibleTiles = 800 / currPixelSize;
-                Vector2 cameraStop = new Vector2(cameraStart.X + visibleTiles, cameraStart.Y + visibleTiles);
+                Vector2 cameraStop;
 
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.PURPLE);
@@ -179,6 +179,8 @@ namespace VinterProjektet
                 }
 
             RenderStart:
+                cameraStop.X = cameraStart.X + visibleTiles;
+                cameraStop.Y = cameraStart.Y + visibleTiles;
 
                 for (int x = (int)cameraStart.X; x < cameraStop.X; x++)
                 {
@@ -208,7 +210,17 @@ namespace VinterProjektet
 
         static Vector2 FixRender(int currPixelSize, Vector2 cameraStart)
         {
-            int tileRenderWidth = currPixelSize*800;
+            int maxIndexX = (int)cameraStart.X + 800 / currPixelSize;
+            int maxIndexY = (int)cameraStart.Y + 800 / currPixelSize;
+
+            if (maxIndexX >= 1000)
+            {
+                cameraStart.X = 999 - 800 / currPixelSize;
+            }
+            if (maxIndexY >= 1000)
+            {
+                cameraStart.Y = 999 - 800 / currPixelSize;
+            }
 
             return cameraStart;
         }
@@ -218,16 +230,16 @@ namespace VinterProjektet
             switch (t.type)
             {
                 case "water":
-                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size - 1, size - 1, Color.BLUE);
+                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size, size, Color.BLUE);
                     break;
                 case "flat":
-                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size - 1, size - 1, Color.ORANGE);
+                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size, size, Color.ORANGE);
                     break;
                 case "forrest":
-                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size - 1, size - 1, Color.GREEN);
+                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size, size, Color.GREEN);
                     break;
                 case "stone":
-                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size - 1, size - 1, Color.GRAY);
+                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size, size, Color.GRAY);
                     break;
             }
         }
