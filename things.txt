@@ -4,7 +4,7 @@ Just nu så är spelet i dev men det här är saker jag vill att spelet ska ha:
 
 World
 {
-(kanske göra klass för varje tile? aka heritage saker)
+(kanske göra klass för varje tile?) FIXAT
 PreGen: 
     forrestTile - kan få wood av det i sitt inventory
     stoneTile - kan få sten av det i sitt inventory
@@ -15,17 +15,7 @@ PlayerBuildings:
     labbTile - kan göra så att man får mer resurser per hugg
     landFill - kan göra factorio style 8) - kommer dock göra det till flatTile så inte det finns massa extra bs
     traderTile - där man kan sälja sina saker
-    crafterTile - kan vara att man behöver stå inom range för den eller att man behöver vara i dess UI (jag tror UI för det finns INGEN CHANS ALLS att jag fixar redneck range system...)
-    storageTile - om jag lyckas med en UI är jag säker jag kan fixa flera
-}
-
-View 
-{
-Camera:
-    kommer finnas zoom på kameran, kanske filter och annat misc men zoom är viktigast
-
-Movement: 
-    Det måste ju tyvär finnas en gubbe som springer runt märker jag... - men jag tror att man kommer vara 1x1 person som ser 25x25 eller freeCam (som factorio igen) där man kan zooma och röra sig
+    advancedCrafterTile - kan vara att man behöver stå inom range för den eller att man behöver vara i dess UI (jag tror UI för det finns INGEN CHANS ALLS att jag fixar redneck range system...)
 }
 
 Content
@@ -35,12 +25,11 @@ Material:
     stone - lite mer svårt men samma sak
 
 Player:
-    medium speed - kan röra sig överallt på tiles, inte tile bunden
     large inventory - ska kunna ha alla material som behövs i spelet för jag menar, storageTile, really...?
-    crafting i inventory - ska kunna crafta saker men kanske limited saker för UI är inte oändlig
+    crafting i inventory - ska kunna crafta allt
     
 Trader:
-    skulle vara nice att sälja saker i en traderTile och sen få pengar att köpa saker i en trader tile, det är bara att man måste typ ha garanterat en trader, men med UI och creator interface borde det vara chill
+    Det finns ingen trader utan istället en sak i sitt inventory
 }
 
 Economy:

@@ -1,4 +1,10 @@
-se ett test av kartan från Tile[,] arrayen
+Saker att göra: (Inte i importance ordning)
 
-
-snart check :)
+Se till att det finns en character klass i en annan fil för vill ha flera filer, coolt :sunglasses:
+Jag vill att kameran inte ska zooma och "utgå" från top-left utan att den ska vara mer i mitten av allt. 
+{
+    Man ska kunna plasera saker som genererar inkomst sen kanske så ska man kunna gå till "vatten" (kanske det ska vara village) och när man klikcar på den (villagen) så kommer man in i en affärs view?
+    Alternativt så ska man iallafall ha en universal shop på en keybind och att man isåfall börjar med pengar att köpa sin första "tree cutter" eller liknande
+    !ALLT DET HÄR SKA DÅ FINNAS I CHARACTER KLASSEN SÅ ATT DEN TAR HAND OM SPELET I SIG FÖRUTOM KARTAN! (MITT MÅL)
+}
+Spara ladda spel - duh...
