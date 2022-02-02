@@ -31,7 +31,6 @@ namespace VinterProjektet
                         break;
                     case "creator":
                         CreateMap();
-                        menu = Creator();
                         break;
 
                         //default:
@@ -87,11 +86,7 @@ namespace VinterProjektet
                 Raylib.UnloadImage(noiseImage);
 
 
-                StartGame();
-
-
-
-
+                StartGame(mapTiles);
 
                 // shows image on the screen - useless RN
                 // Raylib.BeginDrawing();
@@ -109,6 +104,73 @@ namespace VinterProjektet
             {
                 Console.WriteLine("Error loading, no saves directory!");
                 Raylib.CloseWindow();
+            }
+        }
+
+        static string StartGame(Tile[,] map)
+        {
+            int[] pixelsPerTile = new int[13] { 2, 5, 8, 10, 16, 20, 25, 32, 40, 50, 80, 100, 160 };
+            int indexer = 6;
+            int currPixelSize = pixelsPerTile[indexer];
+
+            //Only need a start position as the pixelsPerTile will tell me the stop position
+            //The "size" arguments will be from the Tile[,] which is 1000x1000
+            Vector2 cameraStart = new Vector2(450, 450);
+
+            bool playing = true;
+
+            while (playing && !Raylib.WindowShouldClose())
+            {
+                int visibleTiles = 800 / currPixelSize;
+                Vector2 cameraStop = new Vector2(cameraStart.X + visibleTiles, cameraStart.Y + visibleTiles);
+
+                Raylib.BeginDrawing();
+                Raylib.ClearBackground(Color.PURPLE);
+
+                int tempChange = indexer;
+                indexer += Convert.ToInt32(Raylib.GetMouseWheelMove());
+
+                if (indexer < 0)
+                {
+                    indexer = pixelsPerTile.Length - 1;
+                }
+                else if (indexer > pixelsPerTile.Length - 1)
+                {
+                    indexer = 0;
+                }
+
+                currPixelSize = pixelsPerTile[indexer];
+
+                for (int x = (int)cameraStart.X; x < cameraStop.X; x++)
+                {
+                    for (var y = (int)cameraStart.Y; y < cameraStop.Y; y++)
+                    {
+                        RenderChunk((x - (int)cameraStart.X, y - (int)cameraStart.Y), map[x, y], currPixelSize);
+                    }
+                }
+
+                Raylib.EndDrawing();
+            }
+
+            return "menu";
+        }
+
+        static void RenderChunk((int x, int y) cords, Tile t, int size)
+        {
+            switch (t.type)
+            {
+                case "water":
+                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size, size, Color.BLUE);
+                    break;
+                case "flat":
+                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size, size, Color.ORANGE);
+                    break;
+                case "forrest":
+                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size, size, Color.GREEN);
+                    break;
+                case "stone":
+                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size, size, Color.GRAY);
+                    break;
             }
         }
 
@@ -136,25 +198,6 @@ namespace VinterProjektet
             return new Tile(alt, light);
         }
 
-        static string StartGame()
-        {
-            int[] pixelsPerTile = new int[13] { 2, 5, 8, 10, 16, 20, 25, 32, 40, 50, 80, 100, 160 };
-
-
-
-            int currPixels = pixelsPerTile[6];
-            bool playing = true;
-
-            while (playing && !Raylib.WindowShouldClose())
-            {
-                Raylib.BeginDrawing();
-                Raylib.ClearBackground(Color.WHITE);
-                Raylib.DrawRectangle(200, 200, 200, 200, Color.ORANGE);
-                Raylib.EndDrawing();
-            }
-
-            return "menu";
-        }
 
         static string DisplayStartScreen()
         {
