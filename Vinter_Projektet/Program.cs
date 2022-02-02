@@ -187,7 +187,7 @@ namespace VinterProjektet
                         if ((x < 0 || x > 999) || (y < 0 || y > 999))
                         {
                             Console.WriteLine($"Don't zoom while drinking! Will not load tile [{x}, {y}]");
-                            (currPixelSize, cameraStart) = FixRender(x, y, currPixelSize, cameraStart);
+                            cameraStart = FixRender(currPixelSize, cameraStart);
                             Raylib.ClearBackground(Color.PURPLE);
                             goto RenderStart;
                         }
@@ -206,14 +206,11 @@ namespace VinterProjektet
             }
         }
 
-        static (int, Vector2) FixRender(int x, int y, int currPixelSize, Vector2 cameraStart)
+        static Vector2 FixRender(int currPixelSize, Vector2 cameraStart)
         {
-            int[] pixelsPerTile = new int[11] { 2, 4, 8, 16, 20, 32, 40, 50, 80, 100, 160 };
+            int tileRenderWidth = currPixelSize*800;
 
-             
-
-
-            return (currPixelSize, cameraStart);
+            return cameraStart;
         }
 
         static void RenderChunk((int x, int y) cords, Tile t, int size)
