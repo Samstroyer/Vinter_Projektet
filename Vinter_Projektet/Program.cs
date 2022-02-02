@@ -17,6 +17,7 @@ namespace VinterProjektet
         static void Setup()
         {
             Raylib.InitWindow(800, 800, "The project!");
+            Raylib.SetTargetFPS(60);
         }
 
         static void GameLoop()
@@ -109,7 +110,7 @@ namespace VinterProjektet
 
         static void StartGame(Tile[,] map)
         {
-            int[] pixelsPerTile = new int[12] { 1, 2, 4, 8, 16, 20, 32, 40, 50, 80, 100, 160 };
+            int[] pixelsPerTile = new int[10] { 1, 2, 4, 8, 16, 20, 32, 40, 50, 80 };
             int indexer = 6;
             int currPixelSize = pixelsPerTile[indexer];
 
@@ -130,21 +131,22 @@ namespace VinterProjektet
                 Raylib.ClearBackground(Color.PURPLE);
 
                 //Movement on the map
+                int modifier = currPixelSize == 1 || currPixelSize == 2 ? 5 : 1;
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_A))
                 {
-                    cameraStart.X -= 1;
+                    cameraStart.X -= 1 * modifier;
                 }
                 else if (Raylib.IsKeyDown(KeyboardKey.KEY_D))
                 {
-                    cameraStart.X += 1;
+                    cameraStart.X += 1 * modifier;
                 }
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_W))
                 {
-                    cameraStart.Y -= 1;
+                    cameraStart.Y -= 1 * modifier;
                 }
                 else if (Raylib.IsKeyDown(KeyboardKey.KEY_S))
                 {
-                    cameraStart.Y += 1;
+                    cameraStart.Y += 1 * modifier;
                 }
 
                 //Scroll on the map
