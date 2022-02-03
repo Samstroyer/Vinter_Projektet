@@ -8,13 +8,13 @@
     ".NETCoreApp,Version=v5.0": {
       "Vinter_Projektet/1.0.0": {
         "dependencies": {
-          "Raylib-cs": "4.0.0-alpha.4"
+          "Raylib-cs": "4.0.0-alpha.5"
         },
         "runtime": {
           "Vinter_Projektet.dll": {}
         }
       },
-      "Raylib-cs/4.0.0-alpha.4": {
+      "Raylib-cs/4.0.0-alpha.5": {
         "dependencies": {
           "System.Numerics.Vectors": "4.5.0"
         },
@@ -56,12 +56,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Raylib-cs/4.0.0-alpha.4": {
+    "Raylib-cs/4.0.0-alpha.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-IY9dSY0JvI2i5JRg6oXPFMB9O/Foy2kTAhVN//VjR9IOlDOvpp1j5hHr3IjGxD8Nx/UN0xeSteVLPnx0ve9LLQ==",
-      "path": "raylib-cs/4.0.0-alpha.4",
-      "hashPath": "raylib-cs.4.0.0-alpha.4.nupkg.sha512"
+      "sha512": "sha512-A42keFkSzi/COLYs4s+YMf+9vv8ZYbg+ddbrso4JHd7C92KWWl5hq2SETxxaMbwgqu4JhWdpWSchi5xu+o3fMg==",
+      "path": "raylib-cs/4.0.0-alpha.5",
+      "hashPath": "raylib-cs.4.0.0-alpha.5.nupkg.sha512"
     },
     "System.Numerics.Vectors/4.5.0": {
       "type": "package",
