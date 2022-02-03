@@ -198,7 +198,7 @@ namespace VinterProjektet
                         else
                         {
                             RenderChunk((x - (int)cameraStart.X, y - (int)cameraStart.Y), map[x, y], currPixelSize);
-                            TileInteraction((x - (int)cameraStart.X, y - (int)cameraStart.Y), currPixelSize);
+                            TileInteraction((x - (int)cameraStart.X, y - (int)cameraStart.Y), currPixelSize, map[x, y]);
                         }
                     }
                 }
@@ -211,11 +211,16 @@ namespace VinterProjektet
             }
         }
 
-        static void TileInteraction((int x, int y) cords, int size)
+        static void TileInteraction((int x, int y) cords, int size, Tile t)
         {
-            Vector2 mp = Raylib.GetMousePosition();
-            if(cords.x < mp.X) {
+            if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
+            {
+                Vector2 mp = Raylib.GetMousePosition();
 
+                if (cords.x < mp.X && cords.x + size > mp.X && cords.y < mp.Y && cords.y + size > mp.Y)
+                {
+                    Console.WriteLine(t.type);
+                }
             }
         }
 
