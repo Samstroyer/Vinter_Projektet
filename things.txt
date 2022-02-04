@@ -12,8 +12,8 @@ PreGen:
     waterTile - bara om jag gör random gens med perlin noise 2D så att det typ hänger ihop. VILL HELST INTE FÅ MASSA RANDOM WATER TILES SOM DÖDAR GAMEPLAY
 
 PlayerBuildings:
-    labbTile - kan göra så att man får mer resurser per hugg
-    landFill - kan göra factorio style 8) - kommer dock göra det till flatTile så inte det finns massa extra bs
+    minerTile - en fabrik som endast går att sätta ut på rätt tile, enkelt för hur jag satt upp det :)
+    labbTile - kan göra så att man får mer resurser överlag?
     traderTile - där man kan sälja sina saker
     advancedCrafterTile - kan vara att man behöver stå inom range för den eller att man behöver vara i dess UI (jag tror UI för det finns INGEN CHANS ALLS att jag fixar redneck range system...)
 }

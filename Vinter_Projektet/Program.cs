@@ -110,11 +110,11 @@ namespace VinterProjektet
 
         static void StartGame(Tile[,] map)
         {
+            Player p = new Player();
             int[] pixelsPerTile = new int[10] { 1, 2, 4, 8, 16, 20, 32, 40, 50, 80 };
             int indexer = 6;
             int currPixelSize = pixelsPerTile[indexer];
-
-            Vector2 cameraPos = new Vector2(0, 0);
+            bool grid = false;
 
             //Only need a start position as the pixelsPerTile will tell me the stop position
             //The "size" arguments will be from the Tile[,] which is 1000x1000
@@ -124,14 +124,14 @@ namespace VinterProjektet
 
             while (playing && !Raylib.WindowShouldClose())
             {
-                int visibleTiles = 800 / currPixelSize;
+                int visibleTiles;
                 Vector2 cameraStop;
 
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.PURPLE);
 
                 //Movement on the map
-                int modifier = currPixelSize == 1 || currPixelSize == 2 ? 5 : 1;
+                int modifier = currPixelSize == pixelsPerTile[0] || currPixelSize == pixelsPerTile[1] || currPixelSize == pixelsPerTile[2] ? 5 : 1;
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_A))
                 {
                     cameraStart.X -= 1 * modifier;
@@ -160,6 +160,7 @@ namespace VinterProjektet
                     indexer = 0;
                 }
                 currPixelSize = pixelsPerTile[indexer];
+                visibleTiles = 800 / currPixelSize;
 
                 //Om man zoomar in, går nära kartans kant och sen zoomar ut så gör man en glitch :)
                 //Det ska inte gå så jag lägger in säkerhetskod här! (Den gör så att den inte kan gå ArrayOutOfBound)
@@ -180,83 +181,101 @@ namespace VinterProjektet
                     cameraStart.Y = 0;
                 }
 
-            RenderStart:
+                //Toggle grid
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_G))
+                {
+                    grid = !grid;
+                }
+                //För om... ja alltså om du visar varje block som en pixel och tar bort en pixel ser man inget...
+                if (currPixelSize == 1)
+                {
+                    grid = false;
+                }
+
+                //CameraStop måste updateras innan också, annars så kommer man rendera tiles som inte existerar...
                 cameraStop.X = cameraStart.X + visibleTiles;
                 cameraStop.Y = cameraStart.Y + visibleTiles;
-
                 for (int x = (int)cameraStart.X; x < cameraStop.X; x++)
                 {
                     for (var y = (int)cameraStart.Y; y < cameraStop.Y; y++)
                     {
-                        if ((x < 0 || x > 999) || (y < 0 || y > 999))
+                        RenderChunk((x - (int)cameraStart.X, y - (int)cameraStart.Y), map[x, y], currPixelSize, grid);
+                    }
+                }
+
+                if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
+                {
+                    Vector2 mouseCords = Raylib.GetMousePosition();
+
+                    //Det finns redan lagg problem ibland, speciellt på skoldatorn. Så för att motverka det:
+                    //Gå igenom "x" först (i), hitta vilket x och sen kolla den raden.
+                    //Annars skulle man brute-force'a sig igenom en större grid 
+                    for (var i = 0; i < Raylib.GetScreenWidth(); i += currPixelSize)
+                    {
+                        if (mouseCords.X > i && mouseCords.X < i + currPixelSize)
                         {
-                            Console.WriteLine($"Don't zoom while drinking! Will not load tile [{x}, {y}]");
-                            cameraStart = FixRender(currPixelSize, cameraStart);
-                            Raylib.ClearBackground(Color.PURPLE);
-                            goto RenderStart;
-                        }
-                        else
-                        {
-                            RenderChunk((x - (int)cameraStart.X, y - (int)cameraStart.Y), map[x, y], currPixelSize);
-                            TileInteraction((x - (int)cameraStart.X, y - (int)cameraStart.Y), currPixelSize, map[x, y]);
+                            int arrX = (int)cameraStart.X + i / currPixelSize;
+
+                            for (var j = 0; j < Raylib.GetScreenHeight(); j += currPixelSize)
+                            {
+                                if (mouseCords.Y > j && mouseCords.Y < j + currPixelSize)
+                                {
+                                    int arrY = (int)cameraStart.Y + j / currPixelSize;
+                                    map[arrX, arrY].type = "water";
+                                    break;
+                                }
+                            }
+                            break;
                         }
                     }
                 }
 
+
+
                 Raylib.EndDrawing();
 
-
-
-
             }
         }
 
-        static void TileInteraction((int x, int y) cords, int size, Tile t)
+        // Ett försök till att fixa kartan som inte behövs för jag fixade det på andra sätt, men kan vara bra att ha kvar om något strular
+        // static Vector2 FixRender(int currPixelSize, Vector2 cameraStart)
+        // {
+        //     int maxIndexX = (int)cameraStart.X + 800 / currPixelSize;
+        //     int maxIndexY = (int)cameraStart.Y + 800 / currPixelSize;
+
+        //     if (maxIndexX >= 1000)
+        //     {
+        //         cameraStart.X = 999 - 800 / currPixelSize;
+        //     }
+        //     if (maxIndexY >= 1000)
+        //     {
+        //         cameraStart.Y = 999 - 800 / currPixelSize;
+        //     }
+
+        //     return cameraStart;
+        // }
+
+        static void RenderChunk((int x, int y) cords, Tile t, int size, bool grid)
         {
-            if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
-            {
-                Vector2 mp = Raylib.GetMousePosition();
-
-                if (cords.x < mp.X && cords.x + size > mp.X && cords.y < mp.Y && cords.y + size > mp.Y)
-                {
-                    Console.WriteLine(t.type);
-                }
-            }
-        }
-
-        static Vector2 FixRender(int currPixelSize, Vector2 cameraStart)
-        {
-            int maxIndexX = (int)cameraStart.X + 800 / currPixelSize;
-            int maxIndexY = (int)cameraStart.Y + 800 / currPixelSize;
-
-            if (maxIndexX >= 1000)
-            {
-                cameraStart.X = 999 - 800 / currPixelSize;
-            }
-            if (maxIndexY >= 1000)
-            {
-                cameraStart.Y = 999 - 800 / currPixelSize;
-            }
-
-            return cameraStart;
-        }
-
-        static void RenderChunk((int x, int y) cords, Tile t, int size)
-        {
+            int g = grid ? 1 : 0;
             switch (t.type)
             {
                 case "water":
-                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size, size, Color.BLUE);
+                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size - g, size - g, Color.BLUE);
                     break;
                 case "flat":
-                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size, size, Color.ORANGE);
+                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size - g, size - g, Color.ORANGE);
                     break;
                 case "forrest":
-                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size, size, Color.GREEN);
+                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size - g, size - g, Color.GREEN);
                     break;
                 case "stone":
-                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size, size, Color.GRAY);
+                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size - g, size - g, Color.GRAY);
                     break;
+                case "debug":
+                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size - g, size - g, Color.RED);
+                    break;
+
             }
         }
 
@@ -289,7 +308,7 @@ namespace VinterProjektet
         {
             int recWidth = 400;
             int recHeight = 100;
-            (Rectangle, string, string)[] buttons = new (Rectangle, string, string)[3] { (new Rectangle(), "Play", "play"), (new Rectangle(), "Create Map", "creator"), (new Rectangle(), "Settings", "settings") };
+            (Rectangle, string, string)[] buttons = new (Rectangle, string, string)[3] { (new Rectangle(), "Load", "play"), (new Rectangle(), "New", "creator"), (new Rectangle(), "Settings", "settings") };
             string nextMenu = "";
 
             int iOffset = 150;
