@@ -1,30 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Samuel\\Desktop\\Coding\\CSharp\\RayLib\\Ny mapp\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj": {}
+    "C:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Samuel\\Desktop\\Coding\\CSharp\\RayLib\\Ny mapp\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj": {
+    "C:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Samuel\\Desktop\\Coding\\CSharp\\RayLib\\Ny mapp\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj",
+        "projectUniqueName": "C:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj",
         "projectName": "Vinter_Projektet",
-        "projectPath": "C:\\Users\\Samuel\\Desktop\\Coding\\CSharp\\RayLib\\Ny mapp\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj",
-        "packagesPath": "C:\\Users\\Samuel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Samuel\\Desktop\\Coding\\CSharp\\RayLib\\Ny mapp\\Vinter_Projektet\\Vinter_Projektet\\obj\\",
+        "projectPath": "C:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj",
+        "packagesPath": "C:\\Users\\palmer.samuel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Samuel\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\palmer.samuel\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
-        "sources": {
-          "https://api.nuget.org/v3/index.json": {}
-        },
         "frameworks": {
           "net5.0": {
             "targetAlias": "net5.0",

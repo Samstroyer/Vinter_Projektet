@@ -8,3 +8,10 @@ Jag vill att kameran inte ska zooma och "utgå" från top-left utan att den ska 
     !ALLT DET HÄR SKA DÅ FINNAS I CHARACTER KLASSEN SÅ ATT DEN TAR HAND OM SPELET I SIG FÖRUTOM KARTAN! (MITT MÅL)
 }
 Spara ladda spel - duh...
+
+
+Okkkkk, så.... Efter att skriva koden så märker jag nu någon vecka innan inlämnningen att min while playing loop är cluttered deluxe - 
+Den har alla olika logiker i sig och jag vill gärna:
+LÄGG IN ALLT I EN FUNKTION (kanske i en annan fil? (för pluspoängen))!
+
+Performance boost - jag sparar texture i varje tile just nu, det är bättre att bara switcha namnet och att ladda alla texturer globalt istället för individuellt. Kan hjälpa med animering?

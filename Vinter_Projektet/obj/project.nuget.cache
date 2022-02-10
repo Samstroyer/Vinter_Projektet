@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "qvRqVty71oUVJHkq7J/fujbOs9wRq3ReWxQ2ZPcwBBlba2/HdmsYoOXrB0jmXMnvvTkRHto5q4n606KRNulshA==",
+  "dgSpecHash": "oxY8C55Tm2pvAgHQ6s6xc1AYrky7/pdiV7ljXIjZJajIOa+emImuuJgOHVJS6FP+kAsgvbQYwk9uDCigVWi5bQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Samuel\\Desktop\\Coding\\CSharp\\RayLib\\Ny mapp\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj",
+  "projectFilePath": "C:\\Users\\palmer.samuel\\Documents\\NTI-Programmering\\Cloned Github\\Vinter_Projektet\\Vinter_Projektet\\Vinter_Projektet.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Samuel\\.nuget\\packages\\raylib-cs\\4.0.0-alpha.5\\raylib-cs.4.0.0-alpha.5.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512"
+    "C:\\Users\\palmer.samuel\\.nuget\\packages\\raylib-cs\\4.0.0-alpha.5\\raylib-cs.4.0.0-alpha.5.nupkg.sha512",
+    "C:\\Users\\palmer.samuel\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512"
   ],
   "logs": []
 }

@@ -127,9 +127,6 @@ namespace VinterProjektet
                 int visibleTiles;
                 Vector2 cameraStop;
 
-                Raylib.BeginDrawing();
-                Raylib.ClearBackground(Color.PURPLE);
-
                 //Movement on the map
                 int modifier = currPixelSize == pixelsPerTile[0] || currPixelSize == pixelsPerTile[1] || currPixelSize == pixelsPerTile[2] ? 5 : 1;
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_A))
@@ -192,6 +189,15 @@ namespace VinterProjektet
                     grid = false;
                 }
 
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_P))
+                {
+                    //Lika med inte sig själv är typ en toggle - True => False && False => True
+                    p.readyToPlace = !p.readyToPlace;
+                }
+
+                Raylib.BeginDrawing();
+                Raylib.ClearBackground(Color.PURPLE);
+
                 //CameraStop måste updateras innan också, annars så kommer man rendera tiles som inte existerar...
                 cameraStop.X = cameraStart.X + visibleTiles;
                 cameraStop.Y = cameraStart.Y + visibleTiles;
@@ -221,7 +227,7 @@ namespace VinterProjektet
                                 if (mouseCords.Y > j && mouseCords.Y < j + currPixelSize)
                                 {
                                     int arrY = (int)cameraStart.Y + j / currPixelSize;
-                                    map[arrX, arrY].type = "water";
+                                    map[arrX, arrY].building = p.ChangeTileTypeToSelectedItem();
                                     break;
                                 }
                             }
@@ -231,51 +237,43 @@ namespace VinterProjektet
                 }
 
 
+                //Rendera selected item ovanför allt ->
+                p.DisplaySelectedItem();
+
 
                 Raylib.EndDrawing();
 
             }
         }
 
-        // Ett försök till att fixa kartan som inte behövs för jag fixade det på andra sätt, men kan vara bra att ha kvar om något strular
-        // static Vector2 FixRender(int currPixelSize, Vector2 cameraStart)
-        // {
-        //     int maxIndexX = (int)cameraStart.X + 800 / currPixelSize;
-        //     int maxIndexY = (int)cameraStart.Y + 800 / currPixelSize;
-
-        //     if (maxIndexX >= 1000)
-        //     {
-        //         cameraStart.X = 999 - 800 / currPixelSize;
-        //     }
-        //     if (maxIndexY >= 1000)
-        //     {
-        //         cameraStart.Y = 999 - 800 / currPixelSize;
-        //     }
-
-        //     return cameraStart;
-        // }
-
-        static void RenderChunk((int x, int y) cords, Tile t, int size, bool grid)
+        static async void RenderChunk((int x, int y) cords, Tile t, int size, bool grid)
         {
             int g = grid ? 1 : 0;
+            int sizedX = cords.x * size;
+            int sizedY = cords.y * size;
+            int displaySize = size - g;
             switch (t.type)
             {
                 case "water":
-                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size - g, size - g, Color.BLUE);
+                    Raylib.DrawRectangle(sizedX, sizedY, displaySize, displaySize, Color.BLUE);
                     break;
                 case "flat":
-                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size - g, size - g, Color.ORANGE);
+                    Raylib.DrawRectangle(sizedX, sizedY, displaySize, displaySize, Color.ORANGE);
                     break;
                 case "forrest":
-                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size - g, size - g, Color.GREEN);
+                    Raylib.DrawRectangle(sizedX, sizedY, displaySize, displaySize, Color.GREEN);
                     break;
                 case "stone":
-                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size - g, size - g, Color.GRAY);
+                    Raylib.DrawRectangle(sizedX, sizedY, displaySize, displaySize, Color.GRAY);
                     break;
                 case "debug":
-                    Raylib.DrawRectangle(cords.x * size, cords.y * size, size - g, size - g, Color.RED);
+                    Raylib.DrawRectangle(sizedX, sizedY, displaySize, displaySize, Color.RED);
                     break;
+            }
 
+            if (t.building.name != "")
+            {
+                Raylib.DrawTexture(t.building.texture, sizedX, sizedY, Color.WHITE);
             }
         }
 
@@ -374,11 +372,17 @@ namespace VinterProjektet
     {
         public string type;
         public float alpha;
+        public (Texture2D texture, string name) building;
 
         public Tile(string alt, int light)
         {
             type = alt;
             alpha = light / 255f;
+        }
+
+        public void SetBuilding((Texture2D, string) buildingType)
+        {
+            building = buildingType;
         }
     }
 }
