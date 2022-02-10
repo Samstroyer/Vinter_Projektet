@@ -15,3 +15,4 @@ Den har alla olika logiker i sig och jag vill gärna:
 LÄGG IN ALLT I EN FUNKTION (kanske i en annan fil? (för pluspoängen))!
 
 Performance boost - jag sparar texture i varje tile just nu, det är bättre att bara switcha namnet och att ladda alla texturer globalt istället för individuellt. Kan hjälpa med animering?
+Rad 286 - resize texture :: Vet inte hur Image *image ska fungera...

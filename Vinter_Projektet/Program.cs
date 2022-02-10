@@ -195,6 +195,15 @@ namespace VinterProjektet
                     p.readyToPlace = !p.readyToPlace;
                 }
 
+                if (Raylib.IsKeyPressed(KeyboardKey.KEY_COMMA))
+                {
+                    p.SwitchSelectedItem(1);
+                }
+                else if (Raylib.IsKeyPressed(KeyboardKey.KEY_PERIOD))
+                {
+                    p.SwitchSelectedItem(-1);
+                }
+
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Color.PURPLE);
 
@@ -273,7 +282,8 @@ namespace VinterProjektet
 
             if (t.building.name != "")
             {
-                Raylib.DrawTexture(t.building.texture, sizedX, sizedY, Color.WHITE);
+                Image tempImg = Raylib.LoadImageFromTexture(t.building.texture);
+                //MÅSTE HITTA ETT SÄTT ATT RESIZE'A TEXTURE!!
             }
         }
 
