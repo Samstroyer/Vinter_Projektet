@@ -9,6 +9,8 @@ class Player
     //Så det är så man switchar tiles i spelet som man kan placera!
 
     List<(Texture2D texture, string name)> textures = new List<(Texture2D texture, string name)>();
+    string selectedItem;
+    bool readyToPlace = false;
 
     public Player()
     {
@@ -29,6 +31,8 @@ class Player
 
     public void DisplaySelectedItem()
     {
-
+        if(readyToPlace) {
+            
+        }
     }
 }
