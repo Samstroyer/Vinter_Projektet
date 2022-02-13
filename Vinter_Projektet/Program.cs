@@ -86,7 +86,6 @@ namespace VinterProjektet
                 }
                 Raylib.UnloadImage(noiseImage);
 
-
                 StartGame(mapTiles);
 
                 // shows image on the screen - useless RN
@@ -283,7 +282,8 @@ namespace VinterProjektet
             if (t.building.name != "")
             {
                 Image tempImg = Raylib.LoadImageFromTexture(t.building.texture);
-                //MÅSTE HITTA ETT SÄTT ATT RESIZE'A TEXTURE!!
+                Raylib.ImageResize(ref tempImg, displaySize, displaySize);
+                
             }
         }
 
