@@ -3,6 +3,7 @@ using Raylib_cs;
 using System.IO;
 using System.Linq;
 using System.Numerics;
+using System.Collections.Generic;
 
 namespace VinterProjektet
 {
@@ -110,6 +111,7 @@ namespace VinterProjektet
         static void StartGame(Tile[,] map)
         {
             Player p = new Player();
+            List<(Texture2D texture, string name)> textures = p.AvailableTileTextures();
             int[] pixelsPerTile = new int[10] { 1, 2, 4, 8, 16, 20, 32, 40, 50, 80 };
             int indexer = 6;
             int currPixelSize = pixelsPerTile[indexer];
@@ -279,11 +281,15 @@ namespace VinterProjektet
                     break;
             }
 
-            if (t.building.name != "")
+            if (t.building.name != "" && t.building.name != null && displaySize > 1)
             {
+                // HUR MAN SKA GÖRA DET I RÄTT ORDNING SEPARAT
                 Image tempImg = Raylib.LoadImageFromTexture(t.building.texture);
                 Raylib.ImageResize(ref tempImg, displaySize, displaySize);
-                
+                Texture2D dispTexture = Raylib.LoadTextureFromImage(tempImg);
+                Raylib.DrawTexture(dispTexture, sizedX, sizedY, Color.WHITE);
+                Raylib.UnloadImage(tempImg);
+                Raylib.UnloadTexture(dispTexture);
             }
         }
 

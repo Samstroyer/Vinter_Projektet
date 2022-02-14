@@ -45,6 +45,11 @@ class Player
         }
     }
 
+    public List<(Texture2D texture, string name)> AvailableTileTextures()
+    {
+        return items;
+    }
+
     public void DisplaySelectedItem()
     {
         if (readyToPlace)
