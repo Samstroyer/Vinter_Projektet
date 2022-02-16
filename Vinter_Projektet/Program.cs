@@ -79,7 +79,6 @@ namespace VinterProjektet
                                 int usedX = xx + (x * 4);
                                 int usedY = yy + (y * 4);
 
-                                //Om man körde javascript skulle det finnas en cool arrowfunction här... RIP
                                 mapTiles[xx + x * 4, yy + y * 4] = GenerateTile(brightness);
                             }
                         }
@@ -89,7 +88,7 @@ namespace VinterProjektet
 
                 StartGame(mapTiles);
 
-                // shows image on the screen - useless RN
+                // Visar bilden som används på skärmen (DEBUGGING MEST)
                 // Raylib.BeginDrawing();
                 // Raylib.ClearBackground(Color.BLACK);
                 // for (int i = 0; i < mapTiles.GetLength(0); i++)
@@ -288,8 +287,9 @@ namespace VinterProjektet
                 Raylib.ImageResize(ref tempImg, displaySize, displaySize);
                 Texture2D dispTexture = Raylib.LoadTextureFromImage(tempImg);
                 Raylib.DrawTexture(dispTexture, sizedX, sizedY, Color.WHITE);
-                Raylib.UnloadImage(tempImg);
-                Raylib.UnloadTexture(dispTexture);
+
+                // Raylib.UnloadImage(tempImg);
+                // Raylib.UnloadTexture(dispTexture);
             }
         }
 

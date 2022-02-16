@@ -9,7 +9,7 @@ class Player
     //N och B är coola tangenter, dem sitter bredvid varandra och det kan stå för Next och Back!
     //Så det är så man switchar tiles i spelet som man kan placera!
 
-    List<(Texture2D texture, string name)> items = new List<(Texture2D texture, string name)>();
+    List<(Texture2D texture, string name)> baseTextures = new List<(Texture2D texture, string name)>();
     int selectedItem = 0;
     public bool readyToPlace = false;
 
@@ -31,7 +31,7 @@ class Player
                 {
                     Texture2D texture = Raylib.LoadTexture(paths[i]);
                     string name = Path.GetFileNameWithoutExtension(paths[i]);
-                    items.Add((texture, name));
+                    baseTextures.Add((texture, name));
                 }
             }
             else
@@ -47,7 +47,7 @@ class Player
 
     public List<(Texture2D texture, string name)> AvailableTileTextures()
     {
-        return items;
+        return baseTextures;
     }
 
     public void DisplaySelectedItem()
@@ -56,14 +56,14 @@ class Player
         {
             Vector2 itemRenderPos = Raylib.GetMousePosition();
 
-            Raylib.DrawTexture(items[selectedItem].texture, (int)itemRenderPos.X - texWidth / 2, (int)itemRenderPos.Y - texWidth / 2, Color.WHITE);
+            Raylib.DrawTexture(baseTextures[selectedItem].texture, (int)itemRenderPos.X - texWidth / 2, (int)itemRenderPos.Y - texWidth / 2, Color.WHITE);
 
         }
     }
 
     public (Texture2D, string) ChangeTileTypeToSelectedItem()
     {
-        return items[selectedItem];
+        return baseTextures[selectedItem];
     }
 
     public void SwitchSelectedItem(int indexChanger)
@@ -71,9 +71,9 @@ class Player
         selectedItem += indexChanger;
         if (selectedItem < 0)
         {
-            selectedItem = items.Count - 1;
+            selectedItem = baseTextures.Count - 1;
         }
-        else if (selectedItem > items.Count - 1)
+        else if (selectedItem > baseTextures.Count - 1)
         {
             selectedItem = 0;
         }

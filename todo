@@ -1,6 +1,5 @@
 Saker att göra: (Inte i importance ordning)
 
-Se till att det finns en character klass i en annan fil för vill ha flera filer, coolt :sunglasses:
 Jag vill att kameran inte ska zooma och "utgå" från top-left utan att den ska vara mer i mitten av allt. 
 {
     Man ska kunna plasera saker som genererar inkomst sen kanske så ska man kunna gå till "vatten" (kanske det ska vara village) och när man klikcar på den (villagen) så kommer man in i en affärs view?
@@ -14,5 +13,8 @@ Okkkkk, så.... Efter att skriva koden så märker jag nu någon vecka innan inl
 Den har alla olika logiker i sig och jag vill gärna:
 LÄGG IN ALLT I EN FUNKTION (kanske i en annan fil? (för pluspoängen))!
 
-Performance boost - jag sparar texture i varje tile just nu, det är bättre att bara switcha namnet och att ladda alla texturer globalt istället för individuellt. Kan hjälpa med animering?
-Rad 286 - resize texture :: Vet inte hur Image *image ska fungera...
+Performance boost - det ska finnas en tile klass som laddas när man skapar zoom saken, den ska sen kunna displaya (med argument) vilken bild, storlek och vart
+
+---
+Jag måste lösa hur jag pushar in alla olika textur storlekar och hur jag refererar korrekt till dem.
+---
