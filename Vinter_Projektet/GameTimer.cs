@@ -8,7 +8,7 @@ using System.Numerics;
 class GameTimer
 {
     private Timer clock;
-    BigInteger moneyPerInterval =
+    private BigInteger moneyPerInterval = 0;
 
     public GameTimer()
     {
@@ -24,6 +24,11 @@ class GameTimer
 
         // Start the timer
         clock.Enabled = true;
+    }
+
+    public void ChangeMoneyPerInterval(int changer)
+    {
+        moneyPerInterval += changer;
     }
 
     private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)

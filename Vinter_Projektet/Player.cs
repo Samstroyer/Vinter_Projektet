@@ -67,6 +67,11 @@ class Player
         return baseTextures[selectedItem].name;
     }
 
+    public void ChangeMoney(int amount)
+    {
+        money += amount;
+    }
+
     public void SwitchSelectedItem(int indexChanger)
     {
         selectedItem += indexChanger;
