@@ -109,9 +109,10 @@ namespace VinterProjektet
 
         static void StartGame(Tile[,] map)
         {
-            Player p = new Player();
-            List<(Texture2D texture, string name)> textures = p.AvailableTileTextures();
+            Player p = new Player(false);
             int[] pixelsPerTile = new int[10] { 1, 2, 4, 8, 16, 20, 32, 40, 50, 80 };
+            TextureHandler th = new TextureHandler(pixelsPerTile);
+            GameTimer gt = new GameTimer();
             int indexer = 6;
             int currPixelSize = pixelsPerTile[indexer];
             bool grid = false;
@@ -214,7 +215,7 @@ namespace VinterProjektet
                 {
                     for (var y = (int)cameraStart.Y; y < cameraStop.Y; y++)
                     {
-                        RenderChunk((x - (int)cameraStart.X, y - (int)cameraStart.Y), map[x, y], currPixelSize, grid);
+                        RenderChunk((x - (int)cameraStart.X, y - (int)cameraStart.Y), map[x, y], currPixelSize, grid, th);
                     }
                 }
 
@@ -236,7 +237,7 @@ namespace VinterProjektet
                                 if (mouseCords.Y > j && mouseCords.Y < j + currPixelSize)
                                 {
                                     int arrY = (int)cameraStart.Y + j / currPixelSize;
-                                    map[arrX, arrY].building = p.ChangeTileTypeToSelectedItem();
+                                    map[arrX, arrY].buildingName = p.ChangeTileTypeToSelectedItem();
                                     break;
                                 }
                             }
@@ -255,11 +256,11 @@ namespace VinterProjektet
             }
         }
 
-        static async void RenderChunk((int x, int y) cords, Tile t, int size, bool grid)
+        static async void RenderChunk((int x, int y) arrPos, Tile t, int size, bool grid, TextureHandler th)
         {
             int g = grid ? 1 : 0;
-            int sizedX = cords.x * size;
-            int sizedY = cords.y * size;
+            int sizedX = arrPos.x * size;
+            int sizedY = arrPos.y * size;
             int displaySize = size - g;
             switch (t.type)
             {
@@ -280,14 +281,15 @@ namespace VinterProjektet
                     break;
             }
 
-            if (t.building.name != "" && t.building.name != null && displaySize > 1)
+            if (t.buildingName != "" && t.buildingName != null && displaySize > 1)
             {
-                // HUR MAN SKA GÖRA DET I RÄTT ORDNING SEPARAT
-                Image tempImg = Raylib.LoadImageFromTexture(t.building.texture);
-                Raylib.ImageResize(ref tempImg, displaySize, displaySize);
-                Texture2D dispTexture = Raylib.LoadTextureFromImage(tempImg);
-                Raylib.DrawTexture(dispTexture, sizedX, sizedY, Color.WHITE);
+                th.RenderBuilding(sizedX, sizedY, size, t.buildingName);
 
+                // HUR MAN SKA GÖRA DET I RÄTT ORDNING SEPARAT istället för th.RenderBuilding()
+                // Image tempImg = Raylib.LoadImageFromTexture(t.building.texture);
+                // Raylib.ImageResize(ref tempImg, displaySize, displaySize);
+                // Texture2D dispTexture = Raylib.LoadTextureFromImage(tempImg);
+                // Raylib.DrawTexture(dispTexture, sizedX, sizedY, Color.WHITE);
                 // Raylib.UnloadImage(tempImg);
                 // Raylib.UnloadTexture(dispTexture);
             }
@@ -388,7 +390,7 @@ namespace VinterProjektet
     {
         public string type;
         public float alpha;
-        public (Texture2D texture, string name) building;
+        public string buildingName;
 
         public Tile(string alt, int light)
         {
@@ -396,9 +398,9 @@ namespace VinterProjektet
             alpha = light / 255f;
         }
 
-        public void SetBuilding((Texture2D, string) buildingType)
+        public void SetBuilding(string buildingType)
         {
-            building = buildingType;
+            buildingName = buildingType;
         }
     }
 }

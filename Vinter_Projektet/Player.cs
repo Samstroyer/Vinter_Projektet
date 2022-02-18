@@ -6,19 +6,20 @@ using System.Collections.Generic;
 
 class Player
 {
-    //N och B är coola tangenter, dem sitter bredvid varandra och det kan stå för Next och Back!
+    //. och , är coola tangenter, dem sitter bredvid varandra och det kan stå för Next och Back!
     //Så det är så man switchar tiles i spelet som man kan placera!
 
-    List<(Texture2D texture, string name)> baseTextures = new List<(Texture2D texture, string name)>();
     int selectedItem = 0;
+    BigInteger money = 0;
     public bool readyToPlace = false;
+    List<(Texture2D texture, string name)> baseTextures = new List<(Texture2D texture, string name)>();
 
     //Standard av alla texture widths i mitt spel. Alla textures är egengjorda med hjälp av DigDig
     int texWidth = 25;
 
-    public Player()
+    public Player(bool useSave)
     {
-        if (false)
+        if (useSave)
         {
             //OM DET FINNS ETT SAVE GAME
         }
@@ -61,9 +62,9 @@ class Player
         }
     }
 
-    public (Texture2D, string) ChangeTileTypeToSelectedItem()
+    public string ChangeTileTypeToSelectedItem()
     {
-        return baseTextures[selectedItem];
+        return baseTextures[selectedItem].name;
     }
 
     public void SwitchSelectedItem(int indexChanger)
