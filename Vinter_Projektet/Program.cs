@@ -112,7 +112,7 @@ namespace VinterProjektet
             Player p = new Player(false);
             int[] pixelsPerTile = new int[10] { 1, 2, 4, 8, 16, 20, 32, 40, 50, 80 };
             TextureHandler th = new TextureHandler(pixelsPerTile);
-            GameTimer gt = new GameTimer();
+            Game gt = new Game();
             int indexer = 6;
             int currPixelSize = pixelsPerTile[indexer];
             bool grid = false;
