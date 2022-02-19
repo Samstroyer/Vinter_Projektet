@@ -17,7 +17,7 @@ class Game
     bool grid = false;
     TextureHandler th;
     private Timer clock;
-    private double moneyPerInterval = 2;
+    private double moneyPerInterval = 0;
     int[] pixelsPerTile = new int[10] { 1, 2, 4, 8, 16, 20, 32, 40, 50, 80 };
     private Texture2D coin = Raylib.LoadTexture(@"SaveData\Assets\bigCoin.png");
 
@@ -118,6 +118,7 @@ class Game
                             int arrY = (int)cameraStart.Y + j / currPixelSize;
 
                             map[arrX, arrY].SetBuilding(p.ChangeTileTypeToSelectedItem());
+                            RecalculateMPS(map[arrX, arrY]);
                             break;
                         }
                     }
@@ -147,6 +148,7 @@ class Game
                             {
                                 p.ChangeInventory(map[arrX, arrY].buildingName, 1);
                                 map[arrX, arrY].SetBuilding(null);
+                                RecalculateMPS(map[arrX, arrY]);
                             }
                             break;
                         }
@@ -155,6 +157,11 @@ class Game
                 }
             }
         }
+    }
+
+    private async void RecalculateMPS(Tile t)
+    {
+        
     }
 
     private void Keybinds(int currPixelSize)
@@ -248,6 +255,7 @@ class Game
         int sizedX = arrPos.x * size;
         int sizedY = arrPos.y * size;
         int displaySize = size - g;
+
         switch (t.type)
         {
             case "water":
@@ -271,7 +279,7 @@ class Game
         {
             th.RenderBuilding(sizedX, sizedY, size, t.buildingName);
 
-            // HUR MAN SKA GÖRA DET I RÄTT ORDNING SEPARAT istället för th.RenderBuilding()
+            // HUR MAN SKA GÖRA DET I ORDNING SEPARAT istället för th.RenderBuilding()
             // Image tempImg = Raylib.LoadImageFromTexture(t.building.texture);
             // Raylib.ImageResize(ref tempImg, displaySize, displaySize);
             // Texture2D dispTexture = Raylib.LoadTextureFromImage(tempImg);
@@ -283,7 +291,7 @@ class Game
 
     private void GameTicker(Object source, System.Timers.ElapsedEventArgs e)
     {
-        //Var försiktig då den här kan enkelt bli computer heavy!
+        //Var försiktig då den här kan enkelt bli computational heavy!
         Console.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
 
         p.ChangeMoney(moneyPerInterval);

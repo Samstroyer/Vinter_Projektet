@@ -18,3 +18,6 @@ Performance boost - det ska finnas en tile klass som laddas när man skapar zoom
 ---
 Jag måste lösa hur jag pushar in alla olika textur storlekar och hur jag refererar korrekt till dem.
 ---
+
+
+Player klassen ska ta hand om all income. Engine kanske callar den men jag vill inte ha en sak som räknar ut hela tiden utan en sak som updateras varje gång man sätter ut något eller sånt etc.

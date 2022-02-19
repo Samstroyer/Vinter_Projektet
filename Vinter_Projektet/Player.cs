@@ -109,4 +109,9 @@ class Player
             selectedItem = 0;
         }
     }
+
+    public double TileWorth(string type)
+    {
+        
+    }
 }
