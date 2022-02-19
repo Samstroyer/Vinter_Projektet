@@ -15,6 +15,10 @@ class Game
     private Timer clock;
     private BigInteger moneyPerInterval = 0;
     Tile[,] map;
+    Player p;
+    TextureHandler th;
+    bool grid = false;
+    int[] pixelsPerTile = new int[10] { 1, 2, 4, 8, 16, 20, 32, 40, 50, 80 };
 
     public Game(Tile[,] m)
     {
@@ -35,12 +39,10 @@ class Game
 
     public void Run()
     {
-        Player p = new Player(false);
-        int[] pixelsPerTile = new int[10] { 1, 2, 4, 8, 16, 20, 32, 40, 50, 80 };
-        TextureHandler th = new TextureHandler(pixelsPerTile);
+        p = new Player(false);
+        th = new TextureHandler(pixelsPerTile);
         int indexer = 6;
         int currPixelSize = pixelsPerTile[indexer];
-        bool grid = false;
 
 
         //Only need a start position as the pixelsPerTile will tell me the stop position
@@ -50,85 +52,14 @@ class Game
 
         while (!Raylib.WindowShouldClose())
         {
-            int visibleTiles;
+            int visibleTiles = 0;
             Vector2 cameraStop;
 
             //Movement on the map
             int modifier = currPixelSize == pixelsPerTile[0] || currPixelSize == pixelsPerTile[1] || currPixelSize == pixelsPerTile[2] ? 5 : 1;
-            if (Raylib.IsKeyDown(KeyboardKey.KEY_A))
-            {
-                cameraStart.X -= 1 * modifier;
-            }
-            else if (Raylib.IsKeyDown(KeyboardKey.KEY_D))
-            {
-                cameraStart.X += 1 * modifier;
-            }
-            if (Raylib.IsKeyDown(KeyboardKey.KEY_W))
-            {
-                cameraStart.Y -= 1 * modifier;
-            }
-            else if (Raylib.IsKeyDown(KeyboardKey.KEY_S))
-            {
-                cameraStart.Y += 1 * modifier;
-            }
+            (cameraStart, indexer, visibleTiles, currPixelSize) = Camera(modifier, cameraStart, indexer, currPixelSize, visibleTiles);
+            Keybinds(currPixelSize);
 
-            //Scroll on the map
-            indexer += Convert.ToInt32(Raylib.GetMouseWheelMove());
-            if (indexer < 0)
-            {
-                indexer = pixelsPerTile.Length - 1;
-            }
-            else if (indexer > pixelsPerTile.Length - 1)
-            {
-                indexer = 0;
-            }
-            currPixelSize = pixelsPerTile[indexer];
-            visibleTiles = 800 / currPixelSize;
-
-            //Om man zoomar in, går nära kartans kant och sen zoomar ut så gör man en glitch :)
-            //Det ska inte gå så jag lägger in säkerhetskod här! (Den gör så att den inte kan gå ArrayOutOfBound)
-            if (cameraStart.X + visibleTiles >= 1000)
-            {
-                cameraStart.X = 1000 - visibleTiles;
-            }
-            else if (cameraStart.X < 0)
-            {
-                cameraStart.X = 0;
-            }
-            if (cameraStart.Y + visibleTiles >= 1000)
-            {
-                cameraStart.Y = 1000 - visibleTiles;
-            }
-            else if (cameraStart.Y < 0)
-            {
-                cameraStart.Y = 0;
-            }
-
-            //Toggle grid
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_G))
-            {
-                grid = !grid;
-            }
-            //För om... ja alltså om du visar varje block som en pixel och tar bort en pixel ser man inget...
-            if (currPixelSize == 1)
-            {
-                grid = false;
-            }
-
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_P))
-            {
-                //Lika med inte sig själv är typ en toggle - True => False && False => True
-                p.readyToPlace = !p.readyToPlace;
-            }
-
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_COMMA))
-            {
-                p.SwitchSelectedItem(1);
-            }
-            else if (Raylib.IsKeyPressed(KeyboardKey.KEY_PERIOD))
-            {
-                p.SwitchSelectedItem(-1);
-            }
 
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.PURPLE);
@@ -143,6 +74,8 @@ class Game
                     RenderChunk((x - (int)cameraStart.X, y - (int)cameraStart.Y), map[x, y], currPixelSize, grid, th);
                 }
             }
+
+
 
             if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
             {
@@ -179,6 +112,91 @@ class Game
             Raylib.EndDrawing();
 
         }
+    }
+
+    private void Keybinds(int currPixelSize)
+    {
+        //Toggle grid
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_G))
+        {
+            grid = !grid;
+        }
+        //För om... ja alltså om du visar varje block som en pixel och tar bort en pixel ser man inget...
+        if (currPixelSize == 1)
+        {
+            grid = false;
+        }
+
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_P))
+        {
+            //Lika med inte sig själv är typ en toggle - True => False && False => True
+            p.readyToPlace = !p.readyToPlace;
+        }
+
+        if (Raylib.IsKeyPressed(KeyboardKey.KEY_COMMA))
+        {
+            p.SwitchSelectedItem(1);
+        }
+        else if (Raylib.IsKeyPressed(KeyboardKey.KEY_PERIOD))
+        {
+            p.SwitchSelectedItem(-1);
+        }
+
+    }
+
+    private (Vector2, int, int, int) Camera(int modifier, Vector2 cameraStart, int indexer, int currPixelSize, int visibleTiles)
+    {
+        if (Raylib.IsKeyDown(KeyboardKey.KEY_A))
+        {
+            cameraStart.X -= 1 * modifier;
+        }
+        else if (Raylib.IsKeyDown(KeyboardKey.KEY_D))
+        {
+            cameraStart.X += 1 * modifier;
+        }
+        if (Raylib.IsKeyDown(KeyboardKey.KEY_W))
+        {
+            cameraStart.Y -= 1 * modifier;
+        }
+        else if (Raylib.IsKeyDown(KeyboardKey.KEY_S))
+        {
+            cameraStart.Y += 1 * modifier;
+        }
+
+        //Scroll on the map
+        indexer += Convert.ToInt32(Raylib.GetMouseWheelMove());
+        if (indexer < 0)
+        {
+            indexer = pixelsPerTile.Length - 1;
+        }
+        else if (indexer > pixelsPerTile.Length - 1)
+        {
+            indexer = 0;
+        }
+        currPixelSize = pixelsPerTile[indexer];
+        visibleTiles = 800 / currPixelSize;
+
+        //Om man zoomar in, går nära kartans kant och sen zoomar ut så gör man en glitch :)
+        //Det ska inte gå så jag lägger in säkerhetskod här! (Den gör så att den inte kan gå ArrayOutOfBound)
+        if (cameraStart.X + visibleTiles >= 1000)
+        {
+            cameraStart.X = 1000 - visibleTiles;
+        }
+        else if (cameraStart.X < 0)
+        {
+            cameraStart.X = 0;
+        }
+        if (cameraStart.Y + visibleTiles >= 1000)
+        {
+            cameraStart.Y = 1000 - visibleTiles;
+        }
+        else if (cameraStart.Y < 0)
+        {
+            cameraStart.Y = 0;
+        }
+
+        //Det här var i tidigare versioner av spelet i "main" loopen, det var lite cluttered - så la det här istället.
+        return (cameraStart, indexer, visibleTiles, currPixelSize);
     }
 
     static void RenderChunk((int x, int y) arrPos, Tile t, int size, bool grid, TextureHandler th)

@@ -87,18 +87,6 @@ namespace VinterProjektet
                 Raylib.UnloadImage(noiseImage);
 
                 StartGame(mapTiles);
-
-                // Visar bilden som används på skärmen (DEBUGGING MEST)
-                // Raylib.BeginDrawing();
-                // Raylib.ClearBackground(Color.BLACK);
-                // for (int i = 0; i < mapTiles.GetLength(0); i++)
-                // {
-                //     for (int j = 0; j < mapTiles.GetLength(1); j++)
-                //     {
-                //         Raylib.DrawRectangle(Convert.ToInt32(i * 0.8), Convert.ToInt32(j * 0.8), 1, 1, Raylib.ColorAlpha(Color.WHITE, mapTiles[i, j].alpha));
-                //     }
-                // }
-                // Raylib.EndDrawing();
             }
             else
             {
