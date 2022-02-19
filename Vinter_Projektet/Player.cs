@@ -14,6 +14,8 @@ class Player
     public bool readyToPlace = false;
     List<(Texture2D texture, string name)> baseTextures = new List<(Texture2D texture, string name)>();
 
+    List<(string type, int amount)> inventory = new List<(string type, int amount)>();
+
     //Standard av alla texture widths i mitt spel. Alla textures är egengjorda med hjälp av DigDig
     int texWidth = 25;
 

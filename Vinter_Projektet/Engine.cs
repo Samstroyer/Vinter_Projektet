@@ -83,7 +83,18 @@ class Game
         }
 
 
+        MouseBinds(cameraStart, currPixelSize);
 
+        //Rendera selected item ovanför allt ->
+        p.DisplaySelectedItem();
+
+
+        Raylib.EndDrawing();
+
+    }
+
+    private void MouseBinds(Vector2 cameraStart, int currPixelSize)
+    {
         if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
         {
             Vector2 mouseCords = Raylib.GetMousePosition();
@@ -111,13 +122,7 @@ class Game
             }
         }
 
-
-        //Rendera selected item ovanför allt ->
-        p.DisplaySelectedItem();
-
-
-        Raylib.EndDrawing();
-
+        //Sell with the RMB - put in inventory
     }
 
     private void Keybinds(int currPixelSize)
