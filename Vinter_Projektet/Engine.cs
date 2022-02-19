@@ -12,23 +12,26 @@ using System.Collections.Generic;
 
 class Game
 {
-    private Timer clock;
-    private BigInteger moneyPerInterval = 0;
-    Tile[,] map;
     Player p;
-    TextureHandler th;
+    Tile[,] map;
     bool grid = false;
+    TextureHandler th;
+    private Timer clock;
+    private double moneyPerInterval = 2;
     int[] pixelsPerTile = new int[10] { 1, 2, 4, 8, 16, 20, 32, 40, 50, 80 };
+    private Texture2D coin = Raylib.LoadTexture(@"SaveData\Assets\bigCoin.png");
 
     public Game(Tile[,] m)
     {
         map = m;
         // Create a timer and set a two second interval.
         clock = new System.Timers.Timer();
-        clock.Interval = 1000;
+
+        // Sätter intervalen så att det händer 10x i sekunden (100 millisekunder)
+        clock.Interval = 100;
 
         // Hook up the Elapsed event for the timer. 
-        clock.Elapsed += OnTimedEvent;
+        clock.Elapsed += GameTicker;
 
         // Have the timer fire repeated events (true is the default)
         clock.AutoReset = true;
@@ -60,7 +63,6 @@ class Game
             Keybinds(currPixelSize);
 
             Rendering(visibleTiles, cameraStart, currPixelSize);
-
         }
     }
 
@@ -88,9 +90,10 @@ class Game
         //Rendera selected item ovanför allt ->
         p.DisplaySelectedItem();
 
+        Raylib.DrawTexture(coin, 10, 10, Color.WHITE);
+        Raylib.DrawText(p.GetMoney(), 40, 10, 27, Color.WHITE);
 
         Raylib.EndDrawing();
-
     }
 
     private void MouseBinds(Vector2 cameraStart, int currPixelSize)
@@ -113,7 +116,8 @@ class Game
                         if (mouseCords.Y > j && mouseCords.Y < j + currPixelSize)
                         {
                             int arrY = (int)cameraStart.Y + j / currPixelSize;
-                            map[arrX, arrY].buildingName = p.ChangeTileTypeToSelectedItem();
+
+                            map[arrX, arrY].SetBuilding(p.ChangeTileTypeToSelectedItem());
                             break;
                         }
                     }
@@ -123,6 +127,34 @@ class Game
         }
 
         //Sell with the RMB - put in inventory
+        if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_RIGHT_BUTTON))
+        {
+            Vector2 mouseCords = Raylib.GetMousePosition();
+            //Exakt samma som som men LMB
+            for (var i = 0; i < Raylib.GetScreenWidth(); i += currPixelSize)
+            {
+                if (mouseCords.X > i && mouseCords.X < i + currPixelSize)
+                {
+                    int arrX = (int)cameraStart.X + i / currPixelSize;
+
+                    for (var j = 0; j < Raylib.GetScreenHeight(); j += currPixelSize)
+                    {
+                        if (mouseCords.Y > j && mouseCords.Y < j + currPixelSize)
+                        {
+                            int arrY = (int)cameraStart.Y + j / currPixelSize;
+
+                            if (map[arrX, arrY].buildingName != "" || map[arrX, arrY].buildingName != null)
+                            {
+                                p.ChangeInventory(map[arrX, arrY].buildingName, 1);
+                                map[arrX, arrY].SetBuilding(null);
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
     }
 
     private void Keybinds(int currPixelSize)
@@ -132,6 +164,7 @@ class Game
         {
             grid = !grid;
         }
+
         //För om... ja alltså om du visar varje block som en pixel och tar bort en pixel ser man inget...
         if (currPixelSize == 1)
         {
@@ -152,7 +185,6 @@ class Game
         {
             p.SwitchSelectedItem(-1);
         }
-
     }
 
     private (Vector2, int, int, int) Camera(int modifier, Vector2 cameraStart, int indexer, int currPixelSize, int visibleTiles)
@@ -249,13 +281,16 @@ class Game
         }
     }
 
+    private void GameTicker(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        //Var försiktig då den här kan enkelt bli computer heavy!
+        Console.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
+
+        p.ChangeMoney(moneyPerInterval);
+    }
+
     public void ChangeMoneyPerInterval(int changer)
     {
         moneyPerInterval += changer;
-    }
-
-    private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
-    {
-        Console.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
     }
 }

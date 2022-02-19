@@ -12,3 +12,15 @@
 4) Fixa saves
 5) Presentera projekt
 6) Random ->
+
+
+
+
+
+INVENTORY MÅSTE HA SIN EGNA loop
+för att skilja olika saker lättare så borde inventory ha sin egna loop:
+det gör så att man faktiskt kan skilja på om man sätter ut saker när det kommer till musknapparna eller om man håller på och köper/säljer saker i affären. / iventory
+
+
+JAG VILL INTE VARA COMPUTER HEAVY
+Fixa en variabel med hur mycket pengar per cycle man ska få, updatera den varje gång man placerar en byggnad eller man tar bort en- mycket bättre än att räkna ut varje gång
