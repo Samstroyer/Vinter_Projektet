@@ -53,65 +53,71 @@ class Game
         while (!Raylib.WindowShouldClose())
         {
             int visibleTiles = 0;
-            Vector2 cameraStop;
 
             //Movement on the map
             int modifier = currPixelSize == pixelsPerTile[0] || currPixelSize == pixelsPerTile[1] || currPixelSize == pixelsPerTile[2] ? 5 : 1;
             (cameraStart, indexer, visibleTiles, currPixelSize) = Camera(modifier, cameraStart, indexer, currPixelSize, visibleTiles);
             Keybinds(currPixelSize);
 
-
-            Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.PURPLE);
-
-            //CameraStop måste updateras innan också, annars så kommer man rendera tiles som inte existerar...
-            cameraStop.X = cameraStart.X + visibleTiles;
-            cameraStop.Y = cameraStart.Y + visibleTiles;
-            for (int x = (int)cameraStart.X; x < cameraStop.X; x++)
-            {
-                for (var y = (int)cameraStart.Y; y < cameraStop.Y; y++)
-                {
-                    RenderChunk((x - (int)cameraStart.X, y - (int)cameraStart.Y), map[x, y], currPixelSize, grid, th);
-                }
-            }
-
-
-
-            if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
-            {
-                Vector2 mouseCords = Raylib.GetMousePosition();
-
-                //Det finns redan lagg problem ibland, speciellt på skoldatorn. Så för att motverka det:
-                //Gå igenom "x" först (i), hitta vilket x och sen kolla den raden.
-                //Annars skulle man brute-force'a sig igenom en större grid 
-                for (var i = 0; i < Raylib.GetScreenWidth(); i += currPixelSize)
-                {
-                    if (mouseCords.X > i && mouseCords.X < i + currPixelSize)
-                    {
-                        int arrX = (int)cameraStart.X + i / currPixelSize;
-
-                        for (var j = 0; j < Raylib.GetScreenHeight(); j += currPixelSize)
-                        {
-                            if (mouseCords.Y > j && mouseCords.Y < j + currPixelSize)
-                            {
-                                int arrY = (int)cameraStart.Y + j / currPixelSize;
-                                map[arrX, arrY].buildingName = p.ChangeTileTypeToSelectedItem();
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-
-
-            //Rendera selected item ovanför allt ->
-            p.DisplaySelectedItem();
-
-
-            Raylib.EndDrawing();
+            Rendering(visibleTiles, cameraStart, currPixelSize);
 
         }
+    }
+
+    private void Rendering(int visibleTiles, Vector2 cameraStart, int currPixelSize)
+    {
+        Vector2 cameraStop;
+
+        Raylib.BeginDrawing();
+        Raylib.ClearBackground(Color.PURPLE);
+
+        //CameraStop måste updateras innan också, annars så kommer man rendera tiles som inte existerar...
+        cameraStop.X = cameraStart.X + visibleTiles;
+        cameraStop.Y = cameraStart.Y + visibleTiles;
+        for (int x = (int)cameraStart.X; x < cameraStop.X; x++)
+        {
+            for (var y = (int)cameraStart.Y; y < cameraStop.Y; y++)
+            {
+                RenderChunk((x - (int)cameraStart.X, y - (int)cameraStart.Y), map[x, y], currPixelSize, grid, th);
+            }
+        }
+
+
+
+        if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
+        {
+            Vector2 mouseCords = Raylib.GetMousePosition();
+
+            //Det finns redan lagg problem ibland, speciellt på skoldatorn. Så för att motverka det:
+            //Gå igenom "x" först (i), hitta vilket x och sen kolla den raden.
+            //Annars skulle man brute-force'a sig igenom en större grid 
+            for (var i = 0; i < Raylib.GetScreenWidth(); i += currPixelSize)
+            {
+                if (mouseCords.X > i && mouseCords.X < i + currPixelSize)
+                {
+                    int arrX = (int)cameraStart.X + i / currPixelSize;
+
+                    for (var j = 0; j < Raylib.GetScreenHeight(); j += currPixelSize)
+                    {
+                        if (mouseCords.Y > j && mouseCords.Y < j + currPixelSize)
+                        {
+                            int arrY = (int)cameraStart.Y + j / currPixelSize;
+                            map[arrX, arrY].buildingName = p.ChangeTileTypeToSelectedItem();
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+
+        //Rendera selected item ovanför allt ->
+        p.DisplaySelectedItem();
+
+
+        Raylib.EndDrawing();
+
     }
 
     private void Keybinds(int currPixelSize)
