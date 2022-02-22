@@ -17,7 +17,6 @@ class Game
     bool grid = false;
     TextureHandler th;
     private Timer clock;
-    private double moneyPerInterval = 0;
     int[] pixelsPerTile = new int[10] { 1, 2, 4, 8, 16, 20, 32, 40, 50, 80 };
     private Texture2D coin = Raylib.LoadTexture(@"SaveData\Assets\bigCoin.png");
 
@@ -98,70 +97,54 @@ class Game
 
     private void MouseBinds(Vector2 cameraStart, int currPixelSize)
     {
+        Vector2 mouseCords = Raylib.GetMousePosition();
+        int arrY = 0, arrX = 0;
+
+        //Det finns redan lagg problem ibland, speciellt på skoldatorn. Så för att motverka det:
+        //Gå igenom "x" först (i), hitta vilket x och sen kolla den raden.
+        //Annars skulle man brute-force'a sig igenom en större grid 
+        for (var i = 0; i < Raylib.GetScreenWidth(); i += currPixelSize)
+        {
+            if (mouseCords.X > i && mouseCords.X < i + currPixelSize)
+            {
+                arrX = (int)cameraStart.X + i / currPixelSize;
+
+                for (var j = 0; j < Raylib.GetScreenHeight(); j += currPixelSize)
+                {
+                    if (mouseCords.Y > j && mouseCords.Y < j + currPixelSize)
+                    {
+                        arrY = (int)cameraStart.Y + j / currPixelSize;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
         if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
         {
-            Vector2 mouseCords = Raylib.GetMousePosition();
-
-            //Det finns redan lagg problem ibland, speciellt på skoldatorn. Så för att motverka det:
-            //Gå igenom "x" först (i), hitta vilket x och sen kolla den raden.
-            //Annars skulle man brute-force'a sig igenom en större grid 
-            for (var i = 0; i < Raylib.GetScreenWidth(); i += currPixelSize)
+            if (map[arrX, arrY].buildingName != "" || map[arrX, arrY].buildingName != null)
             {
-                if (mouseCords.X > i && mouseCords.X < i + currPixelSize)
-                {
-                    int arrX = (int)cameraStart.X + i / currPixelSize;
-
-                    for (var j = 0; j < Raylib.GetScreenHeight(); j += currPixelSize)
-                    {
-                        if (mouseCords.Y > j && mouseCords.Y < j + currPixelSize)
-                        {
-                            int arrY = (int)cameraStart.Y + j / currPixelSize;
-
-                            map[arrX, arrY].SetBuilding(p.ChangeTileTypeToSelectedItem());
-                            RecalculateMPS(map[arrX, arrY]);
-                            break;
-                        }
-                    }
-                    break;
-                }
+                p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, -1);
             }
+            map[arrX, arrY].SetBuilding(p.ChangeTileTypeToSelectedItem(map[arrX, arrY].buildingName));
+            p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, 1);
         }
 
         //Sell with the RMB - put in inventory
         if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_RIGHT_BUTTON))
         {
-            Vector2 mouseCords = Raylib.GetMousePosition();
-            //Exakt samma som som men LMB
-            for (var i = 0; i < Raylib.GetScreenWidth(); i += currPixelSize)
+            if (map[arrX, arrY].buildingName != "" || map[arrX, arrY].buildingName != null)
             {
-                if (mouseCords.X > i && mouseCords.X < i + currPixelSize)
-                {
-                    int arrX = (int)cameraStart.X + i / currPixelSize;
+                p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, -1);
+                p.ChangeInventory(map[arrX, arrY].buildingName, 1);
+                map[arrX, arrY].SetBuilding(null);
 
-                    for (var j = 0; j < Raylib.GetScreenHeight(); j += currPixelSize)
-                    {
-                        if (mouseCords.Y > j && mouseCords.Y < j + currPixelSize)
-                        {
-                            int arrY = (int)cameraStart.Y + j / currPixelSize;
-
-                            if (map[arrX, arrY].buildingName != "" || map[arrX, arrY].buildingName != null)
-                            {
-                                p.ChangeInventory(map[arrX, arrY].buildingName, 1);
-                                map[arrX, arrY].SetBuilding(null);
-                                RecalculateMPS(map[arrX, arrY]);
-                            }
-                            break;
-                        }
-                    }
-                    break;
-                }
             }
         }
-    }
 
-    private async void RecalculateMPS(Tile t)
-    {
-        
+        Raylib.DrawText($"Tile Coordinates: X:{arrX}, Y:{arrY}", Raylib.GetScreenWidth() - 200, 10, 15, Color.WHITE);
+        Raylib.DrawText($"Available Resources: {map[arrX, arrY].richness}", Raylib.GetScreenWidth() - 200, 30, 15, Color.WHITE);
     }
 
     private void Keybinds(int currPixelSize)
@@ -294,11 +277,6 @@ class Game
         //Var försiktig då den här kan enkelt bli computational heavy!
         Console.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
 
-        p.ChangeMoney(moneyPerInterval);
-    }
-
-    public void ChangeMoneyPerInterval(int changer)
-    {
-        moneyPerInterval += changer;
+        p.MoneyTick();
     }
 }

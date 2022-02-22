@@ -8,6 +8,7 @@ class Player
 {
     int selectedItem = 0;
     BigInteger money = 0;
+    int moneyPerInterval = 0;
     public bool readyToPlace = false;
     List<(Texture2D texture, string name)> baseTextures = new List<(Texture2D texture, string name)>();
 
@@ -34,7 +35,7 @@ class Player
                     string name = Path.GetFileNameWithoutExtension(paths[i]);
                     baseTextures.Add((texture, name));
                     inventory.Add((name, 0));
-                    buldingIncome.Add((name, (0, 0)));
+                    buldingIncome.Add((name, (0, (int)Math.Pow(i, 2) + 4)));
                 }
             }
             else
@@ -45,6 +46,17 @@ class Player
         else
         {
             Console.Write("You should not see this message! Something went really wrong...");
+        }
+    }
+
+    public void MoneyPerIntervalUpdater()
+    {
+        moneyPerInterval = 0;
+        foreach ((string, (int, int)) obj in buldingIncome)
+        {
+            (int, int) amountAndGeneration = obj.Item2;
+            moneyPerInterval += amountAndGeneration.Item1 * amountAndGeneration.Item2;
+            Console.WriteLine("New moneyPerInterval is now: {0}", moneyPerInterval);
         }
     }
 
@@ -59,7 +71,7 @@ class Player
         }
     }
 
-    public string ChangeTileTypeToSelectedItem()
+    public string ChangeTileTypeToSelectedItem(string buildingBefore)
     {
         if (readyToPlace)
         {
@@ -67,7 +79,7 @@ class Player
         }
         else
         {
-            return null;
+            return buildingBefore;
         }
     }
 
@@ -85,6 +97,7 @@ class Player
         (string, int) obj = inventory[index];
         obj.Item2 += changeAmount;
         inventory[index] = obj;
+        MoneyPerIntervalUpdater();
     }
 
     public string GetMoney()
@@ -92,9 +105,9 @@ class Player
         return money.ToString();
     }
 
-    public void ChangeMoney(double amount)
+    public void MoneyTick()
     {
-        money += ((int)amount);
+        money += moneyPerInterval;
     }
 
     public void SwitchSelectedItem(int indexChanger)
@@ -110,8 +123,22 @@ class Player
         }
     }
 
-    public double TileWorth(string type)
+    public void AddRemoveTileFromListOfIncomes(string type, int amount)
     {
-        
+        int index = 0;
+        for (int i = 0; i < buldingIncome.ToArray().GetLength(0); i++)
+        {
+            (string, (int, int)) tempObj = buldingIncome[i];
+            if (tempObj.Item1 == type)
+            {
+                index = i;
+            }
+        }
+        (int, int) obj = buldingIncome[index].Item2;
+        obj.Item1 += amount;
+
+        (string, (int, int)) newVals = (buldingIncome[index].type, (obj));
+        buldingIncome[index] = newVals;
+        MoneyPerIntervalUpdater();
     }
 }

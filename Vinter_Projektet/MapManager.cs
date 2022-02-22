@@ -38,7 +38,7 @@ class MapManager
                 //Vi får pixelns ljusstyrka och av det ska vi generera "terrain"
                 Color mapColors = Raylib.GetImageColor(noiseImage, x, y);
                 int brightness = (mapColors.r + mapColors.g + mapColors.b) / 3;
-                double resources = (mapColors.r + mapColors.g + mapColors.b) / 255f;
+                double resources = (mapColors.r + mapColors.g + mapColors.b) / (255f * 3f);
 
                 //Den här delen skulle vara i en separat funktion - men tror jag gillar det mer grupperat i ett.
                 //4 for loops i varandra också, not too bad.... (it is really bad)
