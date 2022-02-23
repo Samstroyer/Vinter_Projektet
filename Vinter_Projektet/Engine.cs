@@ -17,6 +17,7 @@ class Game
     bool grid = false;
     TextureHandler th;
     private Timer clock;
+    private Timer moneyTicker;
     int[] pixelsPerTile = new int[10] { 1, 2, 4, 8, 16, 20, 32, 40, 50, 80 };
     private Texture2D coin = Raylib.LoadTexture(@"SaveData\Assets\bigCoin.png");
 
@@ -25,18 +26,23 @@ class Game
         map = m;
         // Create a timer and set a two second interval.
         clock = new System.Timers.Timer();
+        moneyTicker = new System.Timers.Timer();
 
         // Sätter intervalen så att det händer 10x i sekunden (100 millisekunder)
         clock.Interval = 100;
+        moneyTicker.Interval = 1000;
 
         // Hook up the Elapsed event for the timer. 
         clock.Elapsed += GameTicker;
+        moneyTicker.Elapsed += MoneyUpdate;
 
         // Have the timer fire repeated events (true is the default)
         clock.AutoReset = true;
+        moneyTicker.AutoReset = true;
 
         // Start the timer
         clock.Enabled = true;
+        moneyTicker.Enabled = true;
     }
 
     public void Run()
@@ -123,19 +129,20 @@ class Game
 
         if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
         {
-            if (map[arrX, arrY].buildingName != "" || map[arrX, arrY].buildingName != null)
+            if (map[arrX, arrY].buildingName != "" && map[arrX, arrY].buildingName != null)
             {
                 p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, -1);
+                map[arrX, arrY].SetBuilding(p.ChangeTileTypeToSelectedItem(map[arrX, arrY].buildingName));
+                p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, 1);
             }
-            map[arrX, arrY].SetBuilding(p.ChangeTileTypeToSelectedItem(map[arrX, arrY].buildingName));
-            p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, 1);
         }
 
         //Sell with the RMB - put in inventory
         if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_RIGHT_BUTTON))
         {
-            if (map[arrX, arrY].buildingName != "" || map[arrX, arrY].buildingName != null)
+            if (map[arrX, arrY].buildingName != "" && map[arrX, arrY].buildingName != null)
             {
+                Tile temp = map[arrX, arrY];
                 p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, -1);
                 p.ChangeInventory(map[arrX, arrY].buildingName, 1);
                 map[arrX, arrY].SetBuilding(null);
@@ -278,5 +285,10 @@ class Game
         Console.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
 
         p.MoneyTick();
+    }
+
+    private void MoneyUpdate(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        p.MoneyPerIntervalUpdater();
     }
 }
