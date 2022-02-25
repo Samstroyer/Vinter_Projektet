@@ -140,19 +140,16 @@ class Player
 
     public void AddRemoveTileFromListOfIncomes(string type, int amount)
     {
-        int index = 0;
         for (int i = 0; i < buldingIncome.ToArray().GetLength(0); i++)
         {
             (string, (int, int)) tempObj = buldingIncome[i];
             if (tempObj.Item1 == type)
             {
-                index = i;
+                (int, int) obj = buldingIncome[i].Item2;
+                obj.Item1 += amount;
+                (string, (int, int)) newVals = (buldingIncome[i].type, (obj));
+                buldingIncome[i] = newVals;
             }
         }
-        (int, int) obj = buldingIncome[index].Item2;
-        obj.Item1 += amount;
-
-        (string, (int, int)) newVals = (buldingIncome[index].type, (obj));
-        buldingIncome[index] = newVals;
     }
 }

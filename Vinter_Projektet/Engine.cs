@@ -132,9 +132,9 @@ class Game
             if (map[arrX, arrY].buildingName != "" && map[arrX, arrY].buildingName != null)
             {
                 p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, -1);
-                map[arrX, arrY].SetBuilding(p.ChangeTileTypeToSelectedItem(map[arrX, arrY].buildingName));
-                p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, 1);
             }
+            map[arrX, arrY].SetBuilding(p.ChangeTileTypeToSelectedItem(map[arrX, arrY].buildingName));
+            p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, 1);
         }
 
         //Sell with the RMB - put in inventory
@@ -142,11 +142,9 @@ class Game
         {
             if (map[arrX, arrY].buildingName != "" && map[arrX, arrY].buildingName != null)
             {
-                Tile temp = map[arrX, arrY];
+                map[arrX, arrY].SetBuilding(null);
                 p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, -1);
                 p.ChangeInventory(map[arrX, arrY].buildingName, 1);
-                map[arrX, arrY].SetBuilding(null);
-
             }
         }
 
