@@ -51,6 +51,7 @@ class Game
         th = new TextureHandler(pixelsPerTile);
         int indexer = 6;
         int currPixelSize = pixelsPerTile[indexer];
+        bool inventory = false;
 
 
         //Only need a start position as the pixelsPerTile will tell me the stop position
@@ -60,14 +61,27 @@ class Game
 
         while (!Raylib.WindowShouldClose())
         {
-            int visibleTiles = 0;
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_I))
+            {
+                inventory = !inventory;
+            }
 
-            //Movement on the map
-            int modifier = currPixelSize == pixelsPerTile[0] || currPixelSize == pixelsPerTile[1] || currPixelSize == pixelsPerTile[2] ? 5 : 1;
-            (cameraStart, indexer, visibleTiles, currPixelSize) = Camera(modifier, cameraStart, indexer, currPixelSize, visibleTiles);
-            Keybinds(currPixelSize);
+            if (inventory)
+            {
+                p.ShowInventory();
+                inventory = false;
+            }
+            else
+            {
+                int visibleTiles = 0;
 
-            Rendering(visibleTiles, cameraStart, currPixelSize);
+                //Movement on the map
+                int modifier = currPixelSize == pixelsPerTile[0] || currPixelSize == pixelsPerTile[1] || currPixelSize == pixelsPerTile[2] ? 5 : 1;
+                (cameraStart, indexer, visibleTiles, currPixelSize) = Camera(modifier, cameraStart, indexer, currPixelSize, visibleTiles);
+                Keybinds(currPixelSize);
+
+                Rendering(visibleTiles, cameraStart, currPixelSize);
+            }
         }
     }
 
@@ -127,24 +141,27 @@ class Game
             }
         }
 
+        //Sätt ut en byggnad 
         if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
         {
             if (map[arrX, arrY].buildingName != "" && map[arrX, arrY].buildingName != null)
             {
                 p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, -1);
+                p.ChangeInventory(map[arrX, arrY].buildingName, 1);
             }
             map[arrX, arrY].SetBuilding(p.ChangeTileTypeToSelectedItem(map[arrX, arrY].buildingName));
+            p.ChangeInventory(map[arrX, arrY].buildingName, -1);
             p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, 1);
         }
 
-        //Sell with the RMB - put in inventory
+        //Ta bort en byggnad 
         if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_RIGHT_BUTTON))
         {
             if (map[arrX, arrY].buildingName != "" && map[arrX, arrY].buildingName != null)
             {
-                map[arrX, arrY].SetBuilding(null);
-                p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, -1);
                 p.ChangeInventory(map[arrX, arrY].buildingName, 1);
+                p.AddRemoveTileFromListOfIncomes(map[arrX, arrY].buildingName, -1);
+                map[arrX, arrY].SetBuilding(null);
             }
         }
 

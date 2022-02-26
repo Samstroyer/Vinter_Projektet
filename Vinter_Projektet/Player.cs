@@ -52,6 +52,7 @@ class Player
 
     public void MoneyPerIntervalUpdater()
     {
+        moneyPerInterval = 0;
         foreach ((string, (int, int)) obj in buldingIncome)
         {
             (int, int) amountAndGeneration = obj.Item2;
@@ -110,8 +111,15 @@ class Player
                 index = i;
             }
         }
+
         (string, int) obj = inventory[index];
         obj.Item2 += changeAmount;
+
+        if (obj.Item2 < 0)
+        {
+            obj.Item2 = 0;
+        }
+
         inventory[index] = obj;
     }
 
@@ -150,6 +158,25 @@ class Player
                 (string, (int, int)) newVals = (buldingIncome[i].type, (obj));
                 buldingIncome[i] = newVals;
             }
+        }
+    }
+
+    public void ShowInventory()
+    {
+        //Jag blev lärd av Hugo's kod att man kan göra en break i en while loop för att breaka ut ur den, nice!
+        while (true)
+        {
+            if (Raylib.IsKeyPressed(KeyboardKey.KEY_I))
+            {
+                break;
+            }
+
+            Raylib.BeginDrawing();
+
+            Raylib.ClearBackground(Color.BLACK);
+
+
+            Raylib.EndDrawing();
         }
     }
 }
